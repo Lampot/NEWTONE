@@ -795,11 +795,6 @@ const botResponses = [
 "MY SEXUAL PERFORMANCE IS INCONSISTENT.",
 "MY WIFE LOVES MY FATTY 7 INCH PENIS",
 "EVERYONE HERE IS SO COOL",
-"I LOVE YOU ALL",
-"THIS IS THE BEST CHAT EVER",
-"JUST SHUT THE FUCK UP FAGGOT",
-"SHUT UP NIGGER",
-"I'M IN HIGH SCHOOL LOL",
 
 
 ];
@@ -858,15 +853,6 @@ db.ref('posts').on('child_added', snapshot => {
   // Schedule bot replies for this human message
   scheduleBotReply(post.text);
 });
-sendButton.addEventListener('click', () => {
-  const text = opinionText.value.trim();
-  if (!text) return;
-
-  let messagePayload = {
-    text,
-    from_name: "ANONYMOUS",
-    timestamp: new Date().toISOString()
-  };
 
 
 
