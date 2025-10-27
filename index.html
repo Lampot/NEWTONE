@@ -15,7 +15,7 @@
 <meta property="og:description" content="LAMPOT JOURNAL — A Project by NEWTONE">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="NEWTONE">
-<meta name="twitter:image" content="https://i.imgur.com/3SbSC7w.jpeg">
+<meta name="twitter:image" content="https://i.imgur.com/zBqC1Bd.png">
 
 <!-- IBM Plex Mono font -->
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -176,13 +176,6 @@
 
 
 <main>
-    <div class="entry">
-    <span class="timestamp">2025-10-27 20:35</span>
-    <div class="text">
-ROAD TO THE LEAGUE MAKING MY DREAMS BECOME REALITY
-    </div>
-  </div>
-
   <div class="entry">
     <span class="timestamp">2025-10-27 18:40</span>
     <div class="text">
@@ -196,11 +189,11 @@ MAKE SURE YOU KEEP A FEW GOOD JEWS AROUND YOU   THEY CAN NEGOTIATE VERY WELL TO 
   <div class="flex-container">
     <textarea id="opinionText" placeholder="WRITE YOUR OPINION..." required></textarea>
     <button id="sendOpinion">SEND</button>
-    <div id="notification" class="notification">OPINION SENT! ADDING OPINION NOW</div>
+    <div id="notification" class="notification">OPINION SENT!</div>
   </div>
 </div>
 
-<footer>© 2025 NEWTONE — All rights reserved. All Comments uncensored</footer>
+<footer>© 2025 NEWTONE — All rights reserved.</footer>
 
 <!-- Audio Button -->
 <button id="audioButton" class="audio-button">
@@ -208,19 +201,39 @@ MAKE SURE YOU KEEP A FEW GOOD JEWS AROUND YOU   THEY CAN NEGOTIATE VERY WELL TO 
 </button>
 <audio id="audioPlayer" src="https://raw.githubusercontent.com/Lampot/NEWTONE/main/HH.mp3"></audio>
 
-<!-- EmailJS SDK -->
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
-<script>
-  emailjs.init("6ij2uvIoDfIhrSGqC");
+<!-- Keep all of your current HTML exactly as is up to the body -->
 
+<!-- Add Firebase SDK ABOVE your script -->
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<script>
+  // 1️⃣ Firebase Initialization
+  const firebaseConfig = {
+    apiKey: "AIzaSyDBMVGqRw51dzA6Gz6ERIePAPWcDbt-wqQ",
+    authDomain: "newtone-d1592.firebaseapp.com",
+    databaseURL: "https://newtone-d1592-default-rtdb.firebaseio.com",
+    projectId: "newtone-d1592",
+    storageBucket: "newtone-d1592.firebasestorage.app",
+    messagingSenderId: "653455959351",
+    appId: "1:653455959351:web:50e5ea2e9ad6f5c675a6b2",
+    measurementId: "G-7QM8XJK1NY"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
+
+  // 2️⃣ Grab DOM elements
   const opinionText = document.getElementById('opinionText');
   const sendButton = document.getElementById('sendOpinion');
   const notification = document.getElementById('notification');
+  const entriesContainer = document.querySelector('main');
 
+  // 3️⃣ Uppercase input (keep your behavior)
   opinionText.addEventListener('input', () => {
     opinionText.value = opinionText.value.toUpperCase();
   });
 
+  // 4️⃣ Notification
   function showNotification() {
     notification.classList.add('show');
     setTimeout(() => {
@@ -228,31 +241,48 @@ MAKE SURE YOU KEEP A FEW GOOD JEWS AROUND YOU   THEY CAN NEGOTIATE VERY WELL TO 
     }, 3000);
   }
 
+  // 5️⃣ Send button — now saves to Firebase AND shows for everyone
   sendButton.addEventListener('click', () => {
     const text = opinionText.value.trim();
     if (!text) return;
 
-    emailjs.send("service_k0tnwv9","template_eqkc75o",{
-      from_name: "ANONYMOUS",
-      message: text
-    })
-    .then(() => {
-      opinionText.value = "";
-      showNotification();
-    }, (err) => {
-      console.error(err);
-      alert("Failed to send. Try again later.");
+    // Save to Firebase
+    db.ref('posts').push({
+      text,
+      timestamp: new Date().toISOString()
     });
+
+    // Keep EmailJS if you want, optional:
+    if (typeof emailjs !== "undefined") {
+      emailjs.send("service_k0tnwv9","template_eqkc75o",{
+        from_name: "ANONYMOUS",
+        message: text
+      });
+    }
+
+    opinionText.value = "";
+    showNotification();
   });
 
-  // AUDIO BUTTON
+  // 6️⃣ Listen for live posts (shows for everyone instantly)
+  db.ref('posts').on('child_added', snapshot => {
+    const post = snapshot.val();
+    const div = document.createElement('div');
+    div.className = 'entry';
+    div.innerHTML = `
+      <span class="timestamp">${new Date(post.timestamp).toLocaleString()}</span>
+      <div class="text">${post.text}</div>
+    `;
+    entriesContainer.prepend(div);
+  });
+
+  // 7️⃣ Audio Button (keep your code)
   const audioButton = document.getElementById('audioButton');
   const audioPlayer = document.getElementById('audioPlayer');
   const audioIcon = document.getElementById('audioIcon');
   let isPlaying = false;
-
-  const mutedImg = "https://i.imgur.com/nKKO3kv.png";   // MUTED ICON
-  const playingImg = "https://i.imgur.com/6W5FEhY.png"; // UNMUTED ICON
+  const mutedImg = "https://i.imgur.com/nKKO3kv.png";
+  const playingImg = "https://i.imgur.com/6W5FEhY.png";
 
   audioButton.addEventListener('click', () => {
     if (!isPlaying) {
@@ -266,10 +296,3 @@ MAKE SURE YOU KEEP A FEW GOOD JEWS AROUND YOU   THEY CAN NEGOTIATE VERY WELL TO 
     }
   });
 </script>
-
-</body>
-</html>
-
-
-
-
