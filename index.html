@@ -74,7 +74,7 @@
 
   .opinion-box textarea {
     flex: 3;
-    min-height: 40px; /* same height as previous name input */
+    min-height: 40px; 
     resize: vertical;
     border: 1px solid #333;
     background: #fff;
@@ -90,11 +90,6 @@
     transition: 0.2s;
   }
 
-  .opinion-box button:hover {
-    background: #000;
-    color: #fff;
-  }
-
   .opinion-box .flex-container {
     display: flex;
     gap: 10px;
@@ -105,7 +100,7 @@
   /* Floating Notification above send button */
   .notification {
     position: absolute;
-    bottom: 80px; /* slightly higher above send button */
+    bottom: 80px; 
     right: 0;
     background: #fff;
     border: 1px solid #000;
@@ -127,7 +122,6 @@
     transform: translateY(0);
   }
 
-  /* Responsive adjustments */
   @media (max-width: 600px) {
     .opinion-box .flex-container {
       flex-direction: column;
@@ -137,55 +131,73 @@
       margin-top: 10px;
     }
     .notification {
-      bottom: 110px; /* adjust for stacked button */
+      bottom: 110px;
       right: 0;
     }
   }
+
+  /* Audio Button */
+  .audio-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: #fff;
+    border: 2px solid #000;
+    cursor: pointer;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .audio-button img {
+    width: 30px;
+    height: 30px;
+  }
+
 </style>
 </head>
 <body>
 
-<header>LAMPOT JOURNAL</header>
 
 <main>
   <div class="entry">
     <span class="timestamp">2025-10-27 18:40</span>
     <div class="text">
-I wrote this because I needed to remember the silence.
-No hooks. No noise. Just words laid bare.
+MAKE SURE YOU KEEP A FEW GOOD JEWS AROUND YOU   THEY CAN NEGOTIATE VERY WELL TO GET MONEY, JUST MAKE SURE   YOU DON'T MENTION BUYING ANY LAND THOUGH,   THEY MIGHT START CLAIMING IT WAS PROMISED TO THEM 2000 YEARS AGO!!! ᛋᛋ
     </div>
   </div>
 
-  <div class="entry">
-    <span class="timestamp">2025-10-26 23:12</span>
-    <div class="text">
-The city never sleeps, but I do. Eventually.
-I lose count of the times I restart, rewrite, relive.
-    </div>
-  </div>
 </main>
 
 <div class="opinion-box">
   <div class="flex-container">
-    <textarea id="opinionText" placeholder="SUBMIT YOUR OPINION COMPLETLY ANONYMOUSLY!" required></textarea>
+    <textarea id="opinionText" placeholder="WRITE YOUR OPINION..." required></textarea>
     <button id="sendOpinion">SEND</button>
     <div id="notification" class="notification">OPINION SENT!</div>
   </div>
 </div>
 
-<footer>© 2025 Lampot — All rights reserved.</footer>
+<footer>© 2025 NEWTONE — All rights reserved.</footer>
+
+<!-- Audio Button -->
+<button id="audioButton" class="audio-button">
+  <img id="audioIcon" src="https://i.imgur.com/nKKO3kv.png" alt="Muted"> <!-- STARTS MUTED -->
+</button>
+<audio id="audioPlayer" src="https://raw.githubusercontent.com/Lampot/NEWTONE/main/HH.mp3"></audio>
 
 <!-- EmailJS SDK -->
 <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>
-  // Initialize EmailJS
-  emailjs.init("6ij2uvIoDfIhrSGqC"); // keep your public key
+  emailjs.init("6ij2uvIoDfIhrSGqC");
 
   const opinionText = document.getElementById('opinionText');
   const sendButton = document.getElementById('sendOpinion');
   const notification = document.getElementById('notification');
 
-  // Convert input to all caps as they type
   opinionText.addEventListener('input', () => {
     opinionText.value = opinionText.value.toUpperCase();
   });
@@ -194,14 +206,13 @@ I lose count of the times I restart, rewrite, relive.
     notification.classList.add('show');
     setTimeout(() => {
       notification.classList.remove('show');
-    }, 3000); // visible for 3 seconds
+    }, 3000);
   }
 
   sendButton.addEventListener('click', () => {
     const text = opinionText.value.trim();
     if (!text) return;
 
-    // Send via EmailJS with hidden anonymous name
     emailjs.send("service_k0tnwv9","template_eqkc75o",{
       from_name: "ANONYMOUS",
       message: text
@@ -213,6 +224,27 @@ I lose count of the times I restart, rewrite, relive.
       console.error(err);
       alert("Failed to send. Try again later.");
     });
+  });
+
+  // AUDIO BUTTON
+  const audioButton = document.getElementById('audioButton');
+  const audioPlayer = document.getElementById('audioPlayer');
+  const audioIcon = document.getElementById('audioIcon');
+  let isPlaying = false;
+
+  const mutedImg = "https://i.imgur.com/nKKO3kv.png";   // MUTED ICON
+  const playingImg = "https://i.imgur.com/6W5FEhY.png"; // UNMUTED ICON
+
+  audioButton.addEventListener('click', () => {
+    if (!isPlaying) {
+      audioPlayer.play();
+      isPlaying = true;
+      audioIcon.src = playingImg;
+    } else {
+      audioPlayer.pause();
+      isPlaying = false;
+      audioIcon.src = mutedImg;
+    }
   });
 </script>
 
