@@ -284,6 +284,7 @@
 
   audioButton.addEventListener('click', () => {
     if (!isPlaying) {
+      audioPlayer.loop = true;
       audioPlayer.play();
       isPlaying = true;
       audioIcon.src = playingImg;
@@ -861,6 +862,7 @@ db.ref('posts').on('child_added', snapshot => {
 
 
 </script>
+
 
 
 
