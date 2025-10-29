@@ -917,7 +917,7 @@ function processBotQueue() {
   const { botName, reply } = botQueue.shift();
 
   // Random delay between 10-30 seconds
-  const delay = 80 + Math.random() * 2000;
+  const delay = 80 + Math.random() *1000;
 
   setTimeout(() => {
     db.ref('posts').push({
@@ -952,6 +952,7 @@ db.ref('posts').on('child_added', snapshot => {
 
 
 </script>
+
 
 
 
