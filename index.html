@@ -173,7 +173,7 @@
 </style>
 </head>
 <body>
-
+<footer>HEIL HITLER!</footer>
 <main>
   <div class="entry">
     <span class="timestamp"></span>
@@ -897,7 +897,7 @@ function processBotQueue() {
   const { botName, reply } = botQueue.shift();
 
   // Random delay between 10-30 seconds
-  const delay = 800 + Math.random() * 4000;
+  const delay = 80 + Math.random() * 4000;
 
   setTimeout(() => {
     db.ref('posts').push({
@@ -932,6 +932,7 @@ db.ref('posts').on('child_added', snapshot => {
 
 
 </script>
+
 
 
 
