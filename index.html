@@ -2,193 +2,372 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NEWTONE</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ART - COMING SOON</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <!-- Favicon -->
 <link rel="icon" href="https://i.imgur.com/7GazN6A.jpeg" type="image/png">
 
 <!-- Social Preview (Link Embed Image) -->
-<meta property="og:title" content="NEWTONE">
-<meta property="og:image" content="https://blobcdn.same.energy/b/fd/2e/fd2ecac314961daaf3936eb3f1b354c832b6ae12">
+<meta property="og:title" content="ART - DECEMBER FILES">
+<meta property="og:image" content="https://i.imgur.com/HeWLUZs.jpeg">
 <meta property="og:type" content="website">
-<meta property="og:description" content="LAMPOT JOURNAL — A Project by NEWTONE">
+<meta property="og:description" content="ART - COMING SOON">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="NEWTONE">
-<meta name="twitter:image" content="https://i.imgur.com/zBqC1Bd.png">
-
-<!-- IBM Plex Mono font -->
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-
+<meta name="twitter:image" content="https://i.imgur.com/HeWLUZs.jpeg">
 <style>
-  html, body {
-    height: 100%;
-    margin: 0;
-    font-family: "IBM Plex Mono", monospace;
-    background: #fff;
-    color: #000;
-    display: flex;
-    flex-direction: column;
-  }
+/* GLOBAL */
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font-family:'IBM Plex Mono', monospace; background:#000; color:#fff; text-transform:uppercase; display:flex; flex-direction:column; height:100vh; }
 
-.header {
-  font-weight: 100;
-  font-size: 1.5rem; /* Made bigger */
+/* LOCK SCREEN */
+#lock, #loading, #site { min-height:100vh; display:flex; align-items:center; justify-content:center; flex-direction:column; }
+.lock-card { width:380px; padding:30px; background:#000; border:2px solid #000; text-align:center; }
+.lock-input-container { display:flex; gap:8px; justify-content:center; margin-top:20px; }
+.lock-input { flex:1; padding:12px; border:2px solid #fff; background:#000; color:#fff; font-family:inherit; font-size:14px; outline:none; }
+.lock-btn { width:44px; height:44px; border:2px solid #fff; background:#000; color:#fff; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0; }
+.lock-btn:active { transform:scale(0.98); }
+.lock-error { font-size:12px; margin-top:10px; color:#fff; display:none; text-align:center; }
+
+/* LOADING SCREEN */
+#loading div { border:2px solid #fff; padding:20px; background:#000; color:#fff; font-size:16px; text-align:center; }
+
+/* SITE */
+#site { display:none; flex:1; width:100%; flex-direction:column; }
+
+/* TRACK LIST */
+#trackContainer {
+  display:flex;
+  flex:1;
+  width:100%;
+  padding:20px;
+  justify-content:center;
+  align-items:flex-start;
+}
+#trackList {
+  display:flex;
+  flex-direction:column;
+  width:80%;
+  max-width:600px;
+  gap:12px;
+  overflow-y: auto;
+  padding-right: 20px; /* space for scrollbar */
+  height: calc(100vh - 130px); /* leave space for bottom player */
+}
+.trackItem {
+  border:2px solid #fff;
+  padding:15px 20px;
+  background:#000;
+  cursor:pointer;
+  transition: transform 0.2s, background 0.2s, color 0.2s;
+  font-size:18px;
+}
+.trackItem:hover, .trackItem.selected {
+  background:#fff;
+  color:#000;
+  transform:scale(1.02);
+}
+.discHeader {
+  font-size:20px;
+  font-weight:bold;
+  margin:10px 0;
 }
 
+/* Scrollbar styling */
+#trackList::-webkit-scrollbar {
+  width: 12px;
+}
+#trackList::-webkit-scrollbar-track {
+  background: #000;
+}
+#trackList::-webkit-scrollbar-thumb {
+  background-color: #fff;
+  border-radius: 6px;
+  border: 3px solid #000;
+}
+#trackList::-webkit-scrollbar-thumb:hover {
+  background-color: #ccc;
+}
+#trackList {
+  scrollbar-width: thin;
+  scrollbar-color: #fff #000;
+}
 
-  main {
-    flex: 1;
-     font-size: 1rem;
-    overflow-y: auto;
-    padding: 10px 60px; /* Slightly larger padding for balance */
-    box-sizing: border-box;
-  }
-
-  .entry {
-    margin-bottom: 60px;
-  }
-
-  .timestamp {
-    color: #999;
-    font-size: 1.2rem; /* Increased from 0.9rem */
-    margin-bottom: 10px;
-    display: block;
-  }
-
-  .text {
-    white-space: pre-wrap;
-    font-size: 1.5rem; /* Increased from 1rem */
-    line-height: 2; /* Slightly bigger line spacing */
-  }
-
-  footer {
-    border-top: 1px solid #eee;
-    font-size: 1rem; /* Increased from 0.8rem */
-    color: #aaa;
-    padding: 20px 40px;
-  }
-
-  /* Opinion Box */
-  .opinion-box {
-    border-top: 1px solid #ddd;
-    padding: 20px 40px;
-    position: relative;
-  }
-
-  .opinion-box textarea,
-  .opinion-box button {
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 1.2rem; /* Slightly bigger */
-    box-sizing: border-box;
-    padding: 10px;
-  }
-
-  .opinion-box textarea {
-    flex: 3;
-    min-height: 40px; 
-    resize: vertical;
-    border: 1px solid #333;
-    background: #fff;
-    color: #000;
-  }
-
-  .opinion-box button {
-    flex: 1;
-    cursor: pointer;
-    border: 1px solid #000;
-    background: #fff;
-    margin-left: 10px;
-    transition: 0.2s;
-  }
-
-  .opinion-box .flex-container {
-    display: flex;
-    gap: 10px;
-    position: relative;
-    flex-wrap: wrap;
-  }
-
-  /* Floating Notification above send button */
-  .notification {
-    position: absolute;
-    bottom: 80px; 
-    right: 0;
-    background: #fff;
-    border: 1px solid #000;
-    color: #000;
-    padding: 8px 16px;
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 1.2rem; /* Bigger notification text */
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    z-index: 1000;
-    white-space: nowrap;
-    transform: translateY(10px);
-  }
-
-  .notification.show {
-    opacity: 1;
-    pointer-events: auto;
-    transform: translateY(0);
-  }
-
-  @media (max-width: 600px) {
-    .opinion-box .flex-container {
-      flex-direction: column;
-    }
-    .opinion-box button {
-      margin-left: 0;
-      margin-top: 10px;
-    }
-    .notification {
-      bottom: 110px;
-      right: 0;
-    }
-  }
-
-  #clock {
-    position: fixed;
-    top: 20px;
-    right: 40px;
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 1.5rem; /* Increased from 1rem */
-    color: #000;
-    background: #fff;
-  }
+/* AUDIO PLAYER FIXED AT BOTTOM */
+#audioPlayerContainer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px 20px;
+  border-top: 2px solid #fff;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: #000;
+  z-index: 999;
+}
+#albumCover {
+  width:80px;
+  height:80px;
+  object-fit:cover;
+  border:2px solid #fff;
+}
+#audioControls {
+  display:flex;
+  flex-direction:column;
+  flex:1;
+  gap:10px;
+}
+#playerButtons {
+  display:flex;
+  gap:15px;
+  align-items:center;
+}
+.playPauseBtn {
+  width:40px;
+  height:40px;
+  border:2px solid #fff;
+  background:#000;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  font-size:18px;
+}
+.playPauseBtn:active { transform:scale(0.95); }
+#progressContainer {
+  width:100%;
+  height:6px;
+  background:#222;
+  cursor:pointer;
+  position:relative;
+  border-radius:3px;
+}
+#progress {
+  height:100%;
+  background:#fff;
+  width:0%;
+  border-radius:3px;
+}
+#timeDisplay {
+  font-size:14px;
+  text-align:right;
+}
 </style>
 </head>
 <body>
-  <div id="clock"></div>
 
-  <main>
-    <div class="entry">
-      <span class="timestamp"></span>
-      <div class="header">COMING SOON</div>
+<!-- LOCK SCREEN -->
+<div id="lock">
+  <div class="lock-card">
+    <div class="lock-input-container">
+      <input id="password" type="password" class="lock-input" placeholder="PASSWORD" autocomplete="off" />
+      <button class="lock-btn" id="unlockBtn">➔</button>
     </div>
-  </main>
+    <div id="error" class="lock-error">INCORRECT PASSWORD</div>
+  </div>
+</div>
 
-  <footer>© 2025 NEWTONE — All rights reserved.</footer>
+<!-- LOADING -->
+<div id="loading">
+  <div id="loadingText">UNLOCKING THE VAULT</div>
+</div>
 
-  <script>
-    function updateClock() {
-      const now = new Date();
+<!-- SITE -->
+<div id="site">
+  <div id="trackContainer">
+    <div id="trackList"></div>
+  </div>
+  <div id="audioPlayerContainer">
+    <img id="albumCover" src="https://i.imgur.com/h7K7WzP.jpeg" alt="Album Cover">
+    <div id="audioControls">
+      <div id="playerButtons">
+        <div class="playPauseBtn" id="playPauseBtn">▶</div>
+        <div id="timeDisplay">00:00 / 00:00</div>
+      </div>
+      <div id="progressContainer">
+        <div id="progress"></div>
+      </div>
+    </div>
+    <audio id="audioPlayer"></audio>
+  </div>
+</div>
 
-      let days = String(now.getDate()).padStart(2, "0");
-      let hours = String(now.getHours()).padStart(2, "0");
-      let minutes = String(now.getMinutes()).padStart(2, "0");
-      let seconds = String(now.getSeconds()).padStart(2, "0");
-      let milliseconds = String(now.getMilliseconds()).padStart(3, "0");
+<script>
+// LOCK SCREEN
+const PASSWORD = 'ART2026';
+const passwordInput = document.getElementById('password');
+const error = document.getElementById('error');
+const lock = document.getElementById('lock');
+const loading = document.getElementById('loading');
+const site = document.getElementById('site');
+const unlockBtn = document.getElementById('unlockBtn');
+const loadingText = document.getElementById('loadingText');
 
-      document.getElementById("clock").textContent =
-        `${days}:${hours}:${minutes}:${seconds}:${milliseconds}`;
+function runSequence() {
+  const phases = ['UNLOCKING THE VAULT', 'LOADING INTERFACE', 'WELCOME TO ART'];
+  let index = 0;
+  loadingText.textContent = phases[index];
+  const interval = setInterval(() => {
+    index++;
+    if(index >= phases.length){
+      clearInterval(interval);
+      loading.style.display = 'none';
+      site.style.display = 'flex';
+      initTrackList();
+      initAudioPlayer();
+    } else {
+      loadingText.textContent = phases[index];
     }
+  }, 1500);
+}
 
-    setInterval(updateClock, 10);
-    updateClock();
-  </script>
+function unlock() {
+  if(passwordInput.value.trim() === PASSWORD){
+    error.style.display = 'none';
+    lock.style.display = 'none';
+    loading.style.display = 'flex';
+    runSequence();
+  } else {
+    error.style.display = 'block';
+  }
+}
+
+unlockBtn.addEventListener('click', unlock);
+passwordInput.addEventListener('keydown', e => { if(e.key === 'Enter') unlock(); });
+
+// TRACK LIST
+const trackList = document.getElementById('trackList');
+const trackAudioURLs = [
+  'https://raw.githubusercontent.com/Lampot/NEWTONE/main/birdsnangels.mp3',
+  'https://raw.githubusercontent.com/Lampot/NEWTONE/main/SELFISH%20BEST%20VER%20(1).mp3',
+  'https://raw.githubusercontent.com/Lampot/NEWTONE/main/QUIET%20(feat.%20Julian%20Slater%2C%20Dante%20Warren).mp3',
+  'https://raw.githubusercontent.com/Lampot/NEWTONE/main/sometimes%20art.mp3',
+  'https://raw.githubusercontent.com/Lampot/NEWTONE/main/LIFESIZE%20(feat.%20Dante%20Warren).mp3',
+  'https://raw.githubusercontent.com/Lampot/NEWTONE/main/thnsgschange.mp3',
+  'https://raw.githubusercontent.com/Lampot/NEWTONE/main/flowers%20grow%20dantee.mp3',
+  'https://raw.githubusercontent.com/Lampot/NEWTONE/main/believe%20art.mp3',
+  'https://raw.githubusercontent.com/Lampot/NEWTONE/main/NEBRASKA%20TO%20ALASKA.mp3',
+  'https://raw.githubusercontent.com/Lampot/NEWTONE/main/IS%20IT%20OVER%20(feat.%20Felica%20Aylin).mp3',
+  'https://raw.githubusercontent.com/Lampot/NEWTONE/main/MAGIC.mp3',
+  'https://raw.githubusercontent.com/Lampot/NEWTONE/main/CLOSE%20IT%20ALL%20DOWN.mp3',
+  'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Coming%20Back.mp3',
+  'https://raw.githubusercontent.com/Lampot/NEWTONE/main/NIGHTS%20I%20KNOW.mp3',
+  'https://raw.githubusercontent.com/Lampot/NEWTONE/main/ALWAYS.mp3'
+];
+const trackNames = [
+  "BIRDS AND ANGELS - [FEAT. DYLNMBRY]",
+  "SELFISH - [FEAT. DYLNMBRY, JULIAN SLATER, FELICA AYLIN, DANTE WARREN]",
+  "QUIET - [FEAT. DYLNMBRY, JULIAN SLATER, DANTE WARREN]",
+  "SOMETIMES - [FEAT. DYLNMBRY, FELICA AYLIN]",
+  "THIS FOR US - [FEAT. DYLNMBRY, DANTE WARREN]",
+  "THINGS CHANGE - [FEAT. DYLNMBRY]",
+  "FLOWERS GROW - [FEAT. DANTE WARREN]",
+  "BELIEVE - [FEAT. DANTE WARREN]",
+  "NEBRASKA - [FEAT. DYLNMBRY]",
+  "IS IT OVER? - [FEAT. DYLNMBRY, FELICA AYLIN]",
+  "MAGIC - [FEAT. DYLNMBRY, DANTE WARREN]",
+  "CLOSE IT ALL DOWN - [FEAT. DYLNMBRY]",
+  "NEVER COMING BACK - [FEAT. DYLNMBRY]",
+  "NIGHTS I KNOW - [FEAT. DYLNMBRY]",
+  "ALWAYS - [FEAT. DYLNMBRY, DANTE WARREN, FELICA AYLIN]"
+];
+let currentTrack = 0;
+
+function initTrackList(){
+  trackList.innerHTML = '';
+
+  // DISC 1
+  const disc1Header = document.createElement('div');
+  disc1Header.textContent = 'DISC 1';
+  disc1Header.classList.add('discHeader');
+  trackList.appendChild(disc1Header);
+
+  for(let i=0;i<=9 && i<trackNames.length;i++){
+    const item = document.createElement('div');
+    item.classList.add('trackItem');
+    item.textContent = trackNames[i];
+    item.dataset.index = i;
+    item.addEventListener('click',()=>selectTrack(i));
+    trackList.appendChild(item);
+  }
+
+  // DISC 2
+  const disc2Header = document.createElement('div');
+  disc2Header.textContent = 'DISC 2';
+  disc2Header.classList.add('discHeader');
+  trackList.appendChild(disc2Header);
+
+  for(let i=10;i<trackNames.length;i++){
+    const item = document.createElement('div');
+    item.classList.add('trackItem');
+    item.textContent = trackNames[i];
+    item.dataset.index = i;
+    item.addEventListener('click',()=>selectTrack(i));
+    trackList.appendChild(item);
+  }
+}
+
+// AUDIO PLAYER CUSTOM
+const audioPlayer = document.getElementById('audioPlayer');
+const playPauseBtn = document.getElementById('playPauseBtn');
+const progress = document.getElementById('progress');
+const progressContainer = document.getElementById('progressContainer');
+const timeDisplay = document.getElementById('timeDisplay');
+
+function selectTrack(index){
+  currentTrack = index;
+  document.querySelectorAll('.trackItem').forEach((t,i)=>{
+    t.classList.toggle('selected', i===currentTrack);
+  });
+  loadTrack(currentTrack);
+}
+
+function initAudioPlayer(){
+  loadTrack(currentTrack);
+
+  playPauseBtn.addEventListener('click', ()=>{
+    if(audioPlayer.paused){ audioPlayer.play(); } 
+    else { audioPlayer.pause(); }
+  });
+
+  audioPlayer.addEventListener('play', ()=> { playPauseBtn.textContent = '❚❚'; });
+  audioPlayer.addEventListener('pause', ()=> { playPauseBtn.textContent = '▶'; });
+  audioPlayer.addEventListener('timeupdate', updateProgress);
+
+  progressContainer.addEventListener('click', e=>{
+    const rect = progressContainer.getBoundingClientRect();
+    const percent = (e.clientX - rect.left) / rect.width;
+    audioPlayer.currentTime = percent * audioPlayer.duration;
+  });
+}
+
+function loadTrack(index){
+  audioPlayer.src = trackAudioURLs[index];
+  audioPlayer.play();
+}
+
+// UTILITY
+function formatTime(sec){
+  const m = Math.floor(sec/60).toString().padStart(2,'0');
+  const s = Math.floor(sec%60).toString().padStart(2,'0');
+  return `${m}:${s}`;
+}
+
+function updateProgress(){
+  if(audioPlayer.duration){
+    const percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+    progress.style.width = percent + '%';
+    timeDisplay.textContent = `${formatTime(audioPlayer.currentTime)} / ${formatTime(audioPlayer.duration)}`;
+  }
+}
+
+// Select first track by default
+window.addEventListener('load', ()=>{ setTimeout(()=>{ selectTrack(0); },100); });
+</script>
+
 </body>
 </html>
-
-
