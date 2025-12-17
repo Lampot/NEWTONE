@@ -950,6 +950,71 @@ function openAlbumPopup(albumId) {
 }
 
 ['icon-1','icon-2','icon-3','icon-4','icon-5','icon-6','icon-7'].forEach(id => drag(document.getElementById(id)));
+
+// Store preloaded audio elements by albumId → trackIndex
+const preloadedAudios = {};
+
+function openAlbumPopup(albumId) {
+  miniPlayer.style.display = 'none';
+
+  const popup = document.getElementById('album-popup');
+  const cover = document.getElementById('popup-cover');
+  const name = document.getElementById('popup-name');
+  const artist = document.getElementById('popup-artist');
+  const trackList = document.getElementById('track-list');
+
+  const album = albumData[albumId];
+  cover.src = album.cover;
+  name.textContent = album.name;
+  artist.textContent = album.artist;
+  trackList.innerHTML = '';
+
+  // Ensure preloadedAudios for this album exists
+  if (!preloadedAudios[albumId]) {
+    preloadedAudios[albumId] = {};
+  }
+
+  album.tracks.forEach((track, index) => {
+    const li = document.createElement('li');
+    li.textContent = track.name;
+
+    // Preload this track if not already done
+    if (!preloadedAudios[albumId][index] && track.src) {
+      const preloadAudio = new Audio(track.src);
+      preloadAudio.preload = 'auto';
+      preloadAudio.load(); // Trigger loading
+      preloadedAudios[albumId][index] = preloadAudio;
+    }
+
+    li.addEventListener('click', () => {
+      let audioToPlay = preloadedAudios[albumId][index] || new Audio(track.src);
+      // Reuse or create new
+      if (!preloadedAudios[albumId][index]) {
+        audioToPlay.preload = 'auto';
+        preloadedAudios[albumId][index] = audioToPlay;
+      }
+
+      // Set as main player source
+      audioPlayer.src = track.src;
+      audioPlayer.play();
+      playIcon.src = 'https://img.icons8.com/ios-filled/50/000000/pause--v1.png    ';
+      miniPlayIcon.src = 'https://img.icons8.com/ios-filled/50/000000/pause--v1.png    ';
+      currentTrackIndex = index;
+      currentTrackList = album.tracks;
+      currentTrackName = track.name;
+      currentAlbumId = albumId;
+      updateMiniPlayer();
+    });
+
+    trackList.appendChild(li);
+  });
+
+  currentTrackList = album.tracks;
+  currentAlbumId = albumId;
+  popup.style.display = 'flex';
+  currentTrackName = '—';
+  updateMiniPlayer();
+}
 </script>
 
 </body>
