@@ -3,328 +3,954 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ART - COMING SOON</title>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-<!-- Favicon -->
-<link rel="icon" href="https://i.imgur.com/h7K7WzP.jpeg" type="image/png">
+<title>newtone</title>
+
+<link rel="icon" href="https://i.imgur.com/9SD4qeq.png" type="image/png">
 
 <!-- Social Preview -->
-<meta property="og:title" content="ART - DECEMBER FILES">
+<meta property="og:title" content="newtone.world">
 <meta property="og:image" content="https://i.imgur.com/HeWLUZs.jpeg">
 <meta property="og:type" content="website">
-<meta property="og:description" content="ART - COMING SOON">
+<meta property="og:description" content="newtone arts. music. fashion.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="NEWTONE">
 <meta name="twitter:image" content="https://i.imgur.com/HeWLUZs.jpeg">
 
+
 <style>
-/* GLOBAL */
-* { box-sizing:border-box; margin:0; padding:0; }
-body { font-family:'IBM Plex Mono', monospace; background:#000; color:#fff; text-transform:uppercase; display:flex; flex-direction:column; height:100vh; }
-
-/* LOCK SCREEN */
-#lock, #loading, #site { min-height:100vh; display:flex; align-items:center; justify-content:center; flex-direction:column; }
-.lock-card { width:380px; padding:30px; background:#000; border:2px solid #000; text-align:center; }
-.lock-input-container { display:flex; gap:8px; justify-content:center; margin-top:20px; }
-.lock-input { flex:1; padding:12px; border:2px solid #fff; background:#000; color:#fff; font-family:inherit; font-size:14px; outline:none; }
-.lock-btn { width:44px; height:44px; border:2px solid #fff; background:#000; color:#fff; font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; padding:0; }
-.lock-btn:active { transform:scale(0.98); }
-.lock-error { font-size:12px; margin-top:10px; color:#fff; display:none; text-align:center; }
-
-/* LOADING SCREEN */
-#loading div { border:2px solid #fff; padding:20px; background:#000; color:#fff; font-size:16px; text-align:center; }
-
-/* SITE */
-#site { display:none; flex:1; width:100%; flex-direction:column; }
-
-/* TRACK LIST */
-#trackContainer {
-  display:flex;
-  flex:1;
-  width:100%;
-  padding:20px;
-  justify-content:center;
-  align-items:flex-start;
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Courier New", monospace;
+  background: #f2f2f2;
+  color: #333;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
-#trackList {
-  display:flex;
-  flex-direction:column;
-  width:80%;
-  max-width:600px;
-  gap:12px;
-  overflow-y: auto;
-  padding-right: 20px; /* space for scrollbar */
-  height: calc(100vh - 130px); /* leave space for bottom player */
-}
-.trackItem {
-  border:2px solid #fff;
-  padding:15px 20px;
-  background:#000;
-  cursor:pointer;
-  transition: transform 0.2s, background 0.2s, color 0.2s;
-  font-size:18px;
-}
-.trackItem:hover, .trackItem.selected {
-  background:#fff;
-  color:#000;
-  transform:scale(1.02);
-}
-.discHeader {
-  font-size:20px;
-  font-weight:bold;
-  margin:10px 0;
-}
-
-/* Scrollbar styling */
-#trackList::-webkit-scrollbar { width: 12px; }
-#trackList::-webkit-scrollbar-track { background: #000; }
-#trackList::-webkit-scrollbar-thumb { background-color: #fff; border-radius: 6px; border: 3px solid #000; }
-#trackList::-webkit-scrollbar-thumb:hover { background-color: #ccc; }
-#trackList { scrollbar-width: thin; scrollbar-color: #fff #000; }
-
-/* AUDIO PLAYER FIXED AT BOTTOM */
-#audioPlayerContainer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
+.top-nav {
   width: 100%;
-  padding: 15px 20px;
-  border-top: 2px solid #fff;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+.top-nav a {
+  text-decoration: none;
+  color: #666;
+  font-size: 14px;
+}
+.top-nav a:hover { color: #000; }
+.desktop {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - 60px);
+  overflow: hidden;
+}
+.icon {
+  position: absolute;
+  cursor: grab;
+  user-select: none;
+  width: 150px;
+  height: 150px;
+}
+.icon img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+.dragging {
+  outline: 2px dotted rgba(0,0,0,.4);
+  outline-offset: 4px;
+}
+footer {
+  font-size: 12px;
+  margin-bottom: 0;
+  color: #888;
+  padding: 10px 20px;
+  text-align: center;
+}
+footer a {
+  color: #888;
+  text-decoration: none;
+  margin: 0 8px;
+}
+footer a:hover { color: #000; }
+@media (max-width: 768px) {
+  .icon { width: 100px; height: 100px; }
+}
+.popup {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 320px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+  padding: 20px;
+  display: none;
+  flex-direction: column;
+  z-index: 1000;
+}
+/* Minimize button in top-right */
+.popup .minimize-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #f0f0f0;
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: bold;
   display: flex;
   align-items: center;
-  gap: 20px;
-  background: #000;
-  z-index: 999;
+  justify-content: center;
+  color: #666;
+  font-size: 20px;
+  line-height: 1;
 }
-#albumCover { width:80px; height:80px; object-fit:cover; border:2px solid #fff; }
-#audioControls { display:flex; flex-direction:column; flex:1; gap:10px; }
-#playerButtons { display:flex; gap:15px; align-items:center; }
-.playPauseBtn { width:40px; height:40px; border:2px solid #fff; background:#000; color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:18px; }
-.playPauseBtn:active { transform:scale(0.95); }
-#progressContainer { width:100%; height:6px; background:#222; cursor:pointer; position:relative; border-radius:3px; }
-#progress { height:100%; background:#fff; width:0%; border-radius:3px; }
-#timeDisplay { font-size:14px; text-align:right; }
+.popup .minimize-btn:hover {
+  background: #e0e0e0;
+}
+.popup-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+.popup-header img {
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  margin-right: 15px;
+}
+.popup-header .info {
+  display: flex;
+  flex-direction: column;
+}
+.popup-header .info .name {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 5px;
+}
+.popup-header .info .artist {
+  font-size: 14px;
+  color: grey;
+  margin-bottom: 5px;
+}
+.popup-header .info .credits {
+  font-size: 12px;
+  color: #666;
+  text-decoration: none;
+}
+.track-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px 0;
+  flex-grow: 1;
+  max-height: 200px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #ccc #f0f0f0;
+}
+.track-list::-webkit-scrollbar {
+  width: 6px;
+}
+.track-list::-webkit-scrollbar-track {
+  background: #f0f0f0;
+  border-radius: 3px;
+}
+.track-list::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
+.track-list::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+.track-list li {
+  padding: 10px 0;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  font-size: 16px;
+}
+.track-list li:last-child {
+  border-bottom: none;
+}
+.track-list li:hover { 
+  background: #f0f0f0; 
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.button-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 15px;
+  padding-top: 12px;
+  border-top: 1px solid #eee;
+}
+.play-group {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.button-row button,
+.button-row .volume-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  margin: 0;
+}
+.button-row button img,
+.button-row .volume-control img {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+#skip-forward img,
+#mini-skip-forward img {
+  transform: scaleX(-1); /* Now only applied to skip-back images */
+}
+/* Override for skip-forward to face right */
+#skip-forward-forward img,
+#mini-skip-forward-forward img {
+  transform: none;
+}
+
+.progress-container {
+  height: 6px;
+  background: #e0e0e0;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-top: 20px;
+  width: 100%;
+}
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: #007aff;
+  border-radius: 3px;
+  transition: width 0.1s ease;
+}
+
+.volume-control {
+  position: relative;
+  cursor: pointer;
+}
+.volume-slider {
+  position: absolute;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-90deg);
+  width: 100px;
+  height: 6px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: #e0e0e0;
+  border-radius: 3px;
+  outline: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s;
+  z-index: 10;
+}
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background: #007aff;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.volume-slider::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: #007aff;
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+.volume-control:hover .volume-slider {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ✨ CREDITS POPUP */
+#credits-popup {
+  position: fixed;
+  width: 280px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+  padding: 20px;
+  z-index: 2000;
+  cursor: grab;
+  display: none;
+}
+#credits-popup.dragging {
+  cursor: grabbing;
+}
+#credits-popup h3 {
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+#credits-popup p {
+  margin: 6px 0;
+  font-size: 14px;
+}
+#credits-popup .section {
+  margin-bottom: 14px;
+}
+#credits-popup .close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #f0f0f0;
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+}
+#credits-popup .close-btn:hover {
+  background: #e0e0e0;
+}
+
+/* ✨ MINI PLAYER */
+#mini-player {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  padding: 12px;
+  display: none;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  z-index: 1100;
+  width: 300px;
+  max-width: calc(100% - 20px);
+}
+#mini-player.dragging {
+  cursor: grabbing;
+}
+#mini-player img {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+#mini-player .track-info {
+  flex-grow: 1;
+  overflow: hidden;
+}
+#mini-player .track-info .song-title {
+  font-size: 14px;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#mini-player .controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+#mini-player .controls button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#mini-player .controls img {
+  width: 20px;
+  height: 20px;
+}
+/* Restore button */
+#mini-player .restore-btn {
+  background: #f0f0f0;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+}
+#mini-player .restore-btn:hover {
+  background: #e0e0e0;
+}
 </style>
 </head>
 <body>
 
-<!-- LOCK SCREEN -->
-<div id="lock">
-  <div class="lock-card">
-    <div class="lock-input-container">
-      <input id="password" type="password" class="lock-input" placeholder="PASSWORD" autocomplete="off" />
-      <button class="lock-btn" id="unlockBtn">➔</button>
+<div class="top-nav">
+  <a href="https://open.spotify.com/artist/6NvjKnOvxSoVbuv4uDhBgw?si=yjT02rTLQD6q53iWzrOo9Q" target="_blank">music</a>
+  <a href="https://genius.com/artists/Dylnmbry" target="_blank">lyrics</a>
+</div>
+
+<div class="desktop" id="desktop">
+  <a href="#" class="icon" id="icon-1">
+    <img src="https://i.imgur.com/DJv3wLD.jpeg  " alt="ART" />
+  </a>
+  <a href="#" class="icon" id="icon-2">
+    <img src="https://i.imgur.com/jvQuqg0.jpeg  " alt="Album 2" />
+  </a>
+  <a href="#" class="icon" id="icon-3">
+    <img src="https://i.imgur.com/99aYcpG.png" alt="Album 3" />
+  </a>
+  <a href="#" class="icon" id="icon-4">
+    <img src="https://i.imgur.com/IYp740d.jpeg  " alt="Album 4" />
+  </a>
+  <a href="#" class="icon" id="icon-5">
+    <img src="https://i.imgur.com/vd2SfRR.jpeg " alt="Album 5" />
+  </a>
+    <a href="#" class="icon" id="icon-6">
+    <img src="https://i.imgur.com/1aL1gic.jpeg" alt="Album 6" />
+  </a>
+     <a href="#" class="icon" id="icon-7">
+    <img src="https://i.imgur.com/hDy1LoM.jpeg" alt="Album 7" />
+  </a>
+</div>
+
+<footer>
+  <a href="https://www.instagram.com/bigdildodylan  " target="_blank">instagram</a> / 
+</footer>
+
+<!-- Main Album Popup -->
+<div class="popup" id="album-popup">
+  <!-- Minimize button top-right -->
+  <button class="minimize-btn" id="minimize-btn">–</button>
+
+  <div class="popup-header">
+    <img id="popup-cover" src="" alt="cover" />
+    <div class="info">
+      <div class="name" id="popup-name">Album Name</div>
+      <div class="artist" id="popup-artist">Artist Name</div>
+      <a href="#" class="credits" id="credits-btn">credits -></a>
     </div>
-    <div id="error" class="lock-error">INCORRECT PASSWORD</div>
+  </div>
+  <ul class="track-list" id="track-list"></ul>
+
+  <div class="button-row">
+    <div class="volume-control">
+      <input type="range" class="volume-slider" id="volume-bar" min="0" max="1" step="0.01" value="1"/>
+      <img src="https://img.icons8.com/ios-filled/50/000000/medium-volume.png  " id="volume-icon"/>
+    </div>
+
+    <div class="play-group">
+      <button id="skip-back">
+        <img src="https://img.icons8.com/ios-filled/50/000000/rewind--v1.png  " />
+      </button>
+      <button id="play-pause">
+        <img src="https://img.icons8.com/ios-filled/50/000000/play--v1.png  " id="play-icon"/>
+      </button>
+      <button id="skip-forward">
+        <img src="https://img.icons8.com/ios-filled/50/000000/rewind--v1.png  " id="skip-forward-img"/>
+      </button>
+    </div>
+
+    <button class="download">
+      <img src="https://img.icons8.com/ios-filled/50/000000/download--v1.png  " id="download-icon"/>
+    </button>
+  </div>
+
+  <div class="progress-container" id="progress-container">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
+
+  <audio id="audio-player"></audio>
+</div>
+
+<!-- ✨ CREDITS POPUP -->
+<div id="credits-popup">
+  <button class="close-btn">×</button>
+  <h3 id="credits-title">Credits</h3>
+  <div class="section">
+    <strong>Features:</strong>
+    <p id="credits-features">—</p>
+  </div>
+  <div class="section">
+    <strong>Producers:</strong>
+    <p id="credits-producers">—</p>
   </div>
 </div>
 
-<!-- LOADING -->
-<div id="loading">
-  <div id="loadingText">UNLOCKING THE VAULT</div>
-</div>
-
-<!-- SITE -->
-<div id="site">
-  <div id="trackContainer">
-    <div id="trackList"></div>
+<!-- ✨ MINI PLAYER -->
+<div id="mini-player">
+  <img id="mini-cover" src="" alt="cover" />
+  <div class="track-info">
+    <div class="song-title" id="mini-title">—</div>
   </div>
-  <div id="audioPlayerContainer">
-    <img id="albumCover" src="https://i.imgur.com/h7K7WzP.jpeg" alt="Album Cover">
-    <div id="audioControls">
-      <div id="playerButtons">
-        <div class="playPauseBtn" id="playPauseBtn">▶</div>
-        <div id="timeDisplay">00:00 / 00:00</div>
-      </div>
-      <div id="progressContainer">
-        <div id="progress"></div>
-      </div>
-    </div>
-    <audio id="audioPlayer"></audio>
+  <div class="controls">
+    <button id="mini-skip-back">
+      <img src="https://img.icons8.com/ios-filled/50/000000/rewind--v1.png  " />
+    </button>
+    <button id="mini-play-pause">
+      <img src="https://img.icons8.com/ios-filled/50/000000/play--v1.png  " id="mini-play-icon"/>
+    </button>
+    <button id="mini-skip-forward">
+      <img src="https://img.icons8.com/ios-filled/50/000000/rewind--v1.png  " id="mini-skip-forward-img"/>
+    </button>
   </div>
+  <button class="restore-btn" id="restore-btn">⤢</button>
 </div>
 
 <script>
-// LOCK SCREEN
-const PASSWORD = 'ART2026';
-const passwordInput = document.getElementById('password');
-const error = document.getElementById('error');
-const lock = document.getElementById('lock');
-const loading = document.getElementById('loading');
-const site = document.getElementById('site');
-const unlockBtn = document.getElementById('unlockBtn');
-const loadingText = document.getElementById('loadingText');
-
-function runSequence() {
-  const phases = ['UNLOCKING THE VAULT', 'LOADING INTERFACE', 'WELCOME TO ART'];
-  let index = 0;
-  loadingText.textContent = phases[index];
-  const interval = setInterval(() => {
-    index++;
-    if(index >= phases.length){
-      clearInterval(interval);
-      loading.style.display = 'none';
-      site.style.display = 'flex';
-      initTrackList();
-      initAudioPlayer();
-    } else {
-      loadingText.textContent = phases[index];
-    }
-  }, 1500);
+function getRandomPosition(parent, el) {
+  const parentWidth = parent.clientWidth;
+  const parentHeight = parent.clientHeight;
+  const elWidth = el.offsetWidth;
+  const elHeight = el.offsetHeight;
+  return { left: Math.random() * (parentWidth - elWidth) + 'px', top: Math.random() * (parentHeight - elHeight) + 'px' };
 }
 
-function unlock() {
-  if(passwordInput.value.trim() === PASSWORD){
-    error.style.display = 'none';
-    lock.style.display = 'none';
-    loading.style.display = 'flex';
-    runSequence();
+function makeDraggable(el, constrain = false) {
+  let offsetX = 0, offsetY = 0, isDragging = false;
+  el.style.position = 'absolute';
+  el.addEventListener('mousedown', e => {
+    if (e.target.classList.contains('close-btn') || e.target.classList.contains('minimize-btn') || e.target.classList.contains('restore-btn')) return;
+    if (constrain && e.target.closest('.controls')) return;
+    e.preventDefault();
+    const rect = el.getBoundingClientRect();
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
+    isDragging = true;
+    el.classList.add('dragging');
+    function onMouseMove(ev) {
+      if (!isDragging) return;
+      let x = ev.clientX - offsetX;
+      let y = ev.clientY - offsetY;
+      if (constrain) {
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+        x = Math.max(0, Math.min(x, screenWidth - el.offsetWidth));
+        y = Math.max(0, Math.min(y, screenHeight - el.offsetHeight));
+      }
+      el.style.left = x + 'px';
+      el.style.top = y + 'px';
+    }
+    function onMouseUp() {
+      isDragging = false;
+      el.classList.remove('dragging');
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    }
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  });
+}
+
+function drag(el) {
+  const parent = document.getElementById('desktop');
+  let offsetX = 0, offsetY = 0, isDragging = false;
+  el.style.position = 'absolute';
+  const saved = localStorage.getItem(el.id);
+  if (saved) {
+    const pos = JSON.parse(saved);
+    el.style.left = pos.left;
+    el.style.top = pos.top;
   } else {
-    error.style.display = 'block';
+    const randomPos = getRandomPosition(parent, el);
+    el.style.left = randomPos.left;
+    el.style.top = randomPos.top;
   }
-}
-
-unlockBtn.addEventListener('click', unlock);
-passwordInput.addEventListener('keydown', e => { if(e.key === 'Enter') unlock(); });
-
-// TRACK LIST
-const trackList = document.getElementById('trackList');
-const trackAudioURLs = [
-  'https://raw.githubusercontent.com/Lampot/NEWTONE/main/birdsnangels.mp3',
-  'https://raw.githubusercontent.com/Lampot/NEWTONE/main/SELFISH%20BEST%20VER%20(1).mp3',
-  'https://raw.githubusercontent.com/Lampot/NEWTONE/main/QUIET%20(feat.%20Julian%20Slater%2C%20Dante%20Warren).mp3',
-  'https://raw.githubusercontent.com/Lampot/NEWTONE/main/sometimes%20art.mp3',
-  'https://raw.githubusercontent.com/Lampot/NEWTONE/main/LIFESIZE%20(feat.%20Dante%20Warren).mp3',
-  'https://raw.githubusercontent.com/Lampot/NEWTONE/main/thnsgschange.mp3',
-  'https://raw.githubusercontent.com/Lampot/NEWTONE/main/flowers%20grow%20dantee.mp3',
-  'https://raw.githubusercontent.com/Lampot/NEWTONE/main/believe%20art.mp3',
-  'https://raw.githubusercontent.com/Lampot/NEWTONE/main/NEBRASKA%20TO%20ALASKA.mp3',
-  'https://raw.githubusercontent.com/Lampot/NEWTONE/main/IS%20IT%20OVER%20(feat.%20Felica%20Aylin).mp3',
-  'https://raw.githubusercontent.com/Lampot/NEWTONE/main/MAGIC.mp3',
-  'https://raw.githubusercontent.com/Lampot/NEWTONE/main/CLOSE%20IT%20ALL%20DOWN.mp3',
-  'https://raw.githubusercontent.com/Lampot/NEWTONE/main/IT%20WAS%20FRIENDS.mp3',
-  'https://raw.githubusercontent.com/Lampot/NEWTONE/main/NIGHTS%20I%20KNOW.mp3',
-  'https://raw.githubusercontent.com/Lampot/NEWTONE/main/ALWAYS.mp3'
-];
-const trackNames = [
-  "BIRDS AND ANGELS - [FEAT. DYLNMBRY]",
-  "SELFISH - [FEAT. DYLNMBRY, JULIAN SLATER, FELICA AYLIN, DANTE WARREN]",
-  "QUIET - [FEAT. DYLNMBRY, JULIAN SLATER, DANTE WARREN]",
-  "SOMETIMES - [FEAT. DYLNMBRY, FELICA AYLIN]",
-  "THIS FOR US - [FEAT. DYLNMBRY, DANTE WARREN]",
-  "THINGS CHANGE - [FEAT. DYLNMBRY]",
-  "FLOWERS GROW - [FEAT. DANTE WARREN]",
-  "BELIEVE - [FEAT. DANTE WARREN]",
-  "NEBRASKA - [FEAT. DYLNMBRY]",
-  "IS IT OVER? - [FEAT. DYLNMBRY, FELICA AYLIN]",
-  "MAGIC - [FEAT. DYLNMBRY, DANTE WARREN]",
-  "CLOSE IT ALL DOWN - [FEAT. DYLNMBRY]",
-  "IT WAS FRIENDS - [FEAT. DYLNMBRY]",
-  "NIGHTS I KNOW - [FEAT. DYLNMBRY]",
-  "ALWAYS - [FEAT. DYLNMBRY, DANTE WARREN, FELICA AYLIN]"
-];
-let currentTrack = null; // no track selected on load
-
-function initTrackList(){
-  trackList.innerHTML = '';
-
-  // DISC 1
-  const disc1Header = document.createElement('div');
-  disc1Header.textContent = 'DISC 1';
-  disc1Header.classList.add('discHeader');
-  trackList.appendChild(disc1Header);
-
-  for(let i=0;i<=9 && i<trackNames.length;i++){
-    const item = document.createElement('div');
-    item.classList.add('trackItem');
-    item.textContent = trackNames[i];
-    item.dataset.index = i;
-    item.addEventListener('click',()=>selectTrack(i));
-    trackList.appendChild(item);
-  }
-
-  // DISC 2
-  const disc2Header = document.createElement('div');
-  disc2Header.textContent = 'DISC 2';
-  disc2Header.classList.add('discHeader');
-  trackList.appendChild(disc2Header);
-
-  for(let i=10;i<trackNames.length;i++){
-    const item = document.createElement('div');
-    item.classList.add('trackItem');
-    item.textContent = trackNames[i];
-    item.dataset.index = i;
-    item.addEventListener('click',()=>selectTrack(i));
-    trackList.appendChild(item);
-  }
-}
-
-// AUDIO PLAYER CUSTOM
-const audioPlayer = document.getElementById('audioPlayer');
-const playPauseBtn = document.getElementById('playPauseBtn');
-const progress = document.getElementById('progress');
-const progressContainer = document.getElementById('progressContainer');
-const timeDisplay = document.getElementById('timeDisplay');
-
-function selectTrack(index){
-  currentTrack = index;
-  document.querySelectorAll('.trackItem').forEach((t,i)=>{
-    t.classList.toggle('selected', i===currentTrack);
-  });
-  loadTrack(currentTrack);
-}
-
-function initAudioPlayer(){
-  // Player idle on load (no track loaded)
-  audioPlayer.src = '';
-  progress.style.width = '0%';
-  timeDisplay.textContent = '00:00 / 00:00';
-  playPauseBtn.textContent = '▶';
-
-  playPauseBtn.addEventListener('click', ()=>{
-    if(audioPlayer.src){
-      if(audioPlayer.paused){ audioPlayer.play(); } 
-      else { audioPlayer.pause(); }
+  el.addEventListener('mousedown', e => {
+    e.preventDefault();
+    const rect = el.getBoundingClientRect();
+    const parentRect = parent.getBoundingClientRect();
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
+    isDragging = true;
+    el.classList.add('dragging');
+    function onMouseMove(ev) {
+      if (!isDragging) return;
+      let x = ev.clientX - parentRect.left - offsetX;
+      let y = ev.clientY - parentRect.top - offsetY;
+      x = Math.max(0, Math.min(x, parent.clientWidth - el.offsetWidth));
+      y = Math.max(0, Math.min(y, parent.clientHeight - el.offsetHeight));
+      el.style.left = x + 'px';
+      el.style.top = y + 'px';
+      localStorage.setItem(el.id, JSON.stringify({ left: el.style.left, top: el.style.top }));
     }
-  });
-
-  audioPlayer.addEventListener('play', ()=> { playPauseBtn.textContent = '❚❚'; });
-  audioPlayer.addEventListener('pause', ()=> { playPauseBtn.textContent = '▶'; });
-  audioPlayer.addEventListener('timeupdate', updateProgress);
-
-  progressContainer.addEventListener('click', e=>{
-    if(audioPlayer.src){
-      const rect = progressContainer.getBoundingClientRect();
-      const percent = (e.clientX - rect.left) / rect.width;
-      audioPlayer.currentTime = percent * audioPlayer.duration;
+    function onMouseUp() {
+      isDragging = false;
+      el.classList.remove('dragging');
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
     }
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
   });
+  el.addEventListener('click', () => openAlbumPopup(el.id));
 }
 
-function loadTrack(index){
-  audioPlayer.src = trackAudioURLs[index];
+// Audio logic
+const audioPlayer = document.getElementById('audio-player');
+const playBtn = document.getElementById('play-pause');
+const playIcon = document.getElementById('play-icon');
+const skipBackBtn = document.getElementById('skip-back');
+const skipForwardBtn = document.getElementById('skip-forward');
+const skipForwardImg = document.getElementById('skip-forward-img');
+const progressContainer = document.getElementById('progress-container');
+const progressBar = document.getElementById('progress-bar');
+const volumeBar = document.getElementById('volume-bar');
+const volumeIcon = document.getElementById('volume-icon');
+const downloadBtn = document.querySelector('.download');
+const creditsBtn = document.getElementById('credits-btn');
+const creditsPopup = document.getElementById('credits-popup');
+const creditsTitle = document.getElementById('credits-title');
+const creditsFeatures = document.getElementById('credits-features');
+const creditsProducers = document.getElementById('credits-producers');
+const closeCreditsBtn = document.querySelector('#credits-popup .close-btn');
+const minimizeBtn = document.getElementById('minimize-btn');
+const miniPlayer = document.getElementById('mini-player');
+const miniCover = document.getElementById('mini-cover');
+const miniTitle = document.getElementById('mini-title');
+const miniPlayBtn = document.getElementById('mini-play-pause');
+const miniPlayIcon = document.getElementById('mini-play-icon');
+const miniSkipBack = document.getElementById('mini-skip-back');
+const miniSkipForward = document.getElementById('mini-skip-forward');
+const miniSkipForwardImg = document.getElementById('mini-skip-forward-img');
+const restoreBtn = document.getElementById('restore-btn');
+
+let currentTrackIndex = 0;
+let currentTrackList = [];
+let lastVolume = 1;
+let currentAlbumId = null;
+let currentTrackName = '—';
+
+function playTrack(src, index, trackList, name) {
+  if (!src) {
+    currentTrackName = name || '—';
+    updateMiniPlayer();
+    return;
+  }
+  audioPlayer.src = src;
   audioPlayer.play();
+  playIcon.src = 'https://img.icons8.com/ios-filled/50/000000/pause--v1.png  ';
+  miniPlayIcon.src = 'https://img.icons8.com/ios-filled/50/000000/pause--v1.png  ';
+  currentTrackIndex = index;
+  currentTrackList = trackList || [];
+  currentTrackName = name || '—';
+  updateMiniPlayer();
 }
 
-// UTILITY
-function formatTime(sec){
-  const m = Math.floor(sec/60).toString().padStart(2,'0');
-  const s = Math.floor(sec%60).toString().padStart(2,'0');
-  return `${m}:${s}`;
-}
-
-function updateProgress(){
-  if(audioPlayer.duration){
-    const percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
-    progress.style.width = percent + '%';
-    timeDisplay.textContent = `${formatTime(audioPlayer.currentTime)} / ${formatTime(audioPlayer.duration)}`;
+function updateMiniPlayer() {
+  const album = albumData[currentAlbumId];
+  if (album) {
+    miniCover.src = album.cover;
   }
+  miniTitle.textContent = currentTrackName;
 }
 
-// Select nothing by default
-window.addEventListener('load', ()=>{ setTimeout(()=>{ /* nothing selected */ },100); });
+const albumData = {
+  'icon-1': {
+    name: 'ART',
+    artist: 'DYLN',
+    cover: 'https://i.imgur.com/DJv3wLD.jpeg  ',
+    tracks: [
+      { name: 'BIRDS AND ANGELS', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/Birds%20and%20Angels.mp3  ' },
+      { name: 'SELFISH', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/SELFISH%20BEST%20VER%20  (1).mp3' },
+      { name: 'QUIET', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/QUIET%20  (feat.%20Julian%20Slater%2C%20Dante%20Warren).mp3' },
+      { name: 'SOMETIMES', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/sometimes%20art.mp3  ' },
+      { name: 'THIS FOR US', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/LIFESIZE%20  (feat.%20Dante%20Warren).mp3' },
+      { name: 'THINGS CHANGE', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/thnsgschange.mp3  ' },
+      { name: 'FLOWERS GROW', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/flowers%20grow%20dantee.mp3  ' },
+      { name: 'OVERDOSE', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/OVERDOSE.mp3  ' },
+      { name: 'BELIEVE', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/believe%20art.mp3  ' },
+      { name: 'NEBRASKA', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/NEBRASKA%20TO%20ALASKA.mp3  ' },
+      { name: 'IS IT OVER?', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/IS%20IT%20OVER%20  (feat.%20Felica%20Aylin).mp3' }
+    ]
+  },
+  'icon-2': {
+    name: 'GOD COMPLEX',
+    artist: 'DYLN',
+    cover: 'https://i.imgur.com/jvQuqg0.jpeg  ',
+    tracks: [
+      { name: 'I NEED YOU HOME', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/I%20NEED%20YOU%20HOME.mp3  ' },
+      { name: 'CIVIL RIGHTS SIGN', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/CIVIL%20RIGHTS%20SIGN.mp3  ' },
+      { name: 'SEND THIS B!TCH UP', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/SEND%20THIS%20BITCH%20UP.mp3  ' },
+      { name: 'A WHOLE LOT', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/A%20WHOLE%20LOT%20  (1).mp3' },
+      { name: 'STRIPPER TO CEO', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/STRIPPER%20TO%20CEO.mp3  ' },
+      { name: 'HEAVEN', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/HEAVEN.mp3  ' },
+    ]
+  },
+  'icon-3': {
+    name: 'SOMEDAY WE\'LL ALL BE FREE',
+    artist: 'DYLN, Donny Hathaway',
+    cover: 'https://i.imgur.com/Wi4JHHN.png  ',
+    tracks: [
+      { name: 'SOMEDAY WE\'LL ALL BE FREE', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/SOMEDAY%20WE\'LL%20ALL%20BE%20FREE.mp3' },
+    ]
+  },
+  'icon-4': {
+    name: 'KKKANCELED',
+    artist: 'DYLN',
+    cover: 'https://i.imgur.com/IYp740d.jpeg  ',
+    tracks: [
+      { name: 'TRACKS REMOVED', src: '' },
+    ]
+  },
+  'icon-5': {
+    name: 'GODS NATION',
+    artist: 'DYLN',
+    cover: 'https://i.imgur.com/vd2SfRR.jpeg ',
+    tracks: [
+      { name: 'SWEET JESUS', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/SWEET%20JESUS.mp3' },
+      { name: 'AWAKENING', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/Awakening.mp3' },
+      { name: 'OUR FATHER', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/OUR%20FATHER.mp3' },
+      { name: 'THROUGH THE VALLEY', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/THROUGH%20THE%20VALLEY.mp3' },
+      { name: 'HEALING', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/HEALING.mp3' },
+    ]
+  },
+  'icon-6': {
+    name: 'LOVE LOVE LOVE',
+    artist: 'DYLN',
+    cover: 'https://i.imgur.com/1aL1gic.jpeg ',
+    tracks: [
+      { name: 'LOVE LOVE LOVE', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/Love%20Love%20Love.mp3' },
+    ]
+  },
+    'icon-7': {
+    name: 'dress',
+    artist: 'DYLN',
+    cover: 'https://i.imgur.com/hDy1LoM.jpeg ',
+    tracks: [
+      { name: '1. dress', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/DRESS.mp3' },
+    ]
+  },
+  
+};
+
+playBtn.addEventListener('click', () => {
+  if (audioPlayer.paused) {
+    audioPlayer.play();
+    playIcon.src = 'https://img.icons8.com/ios-filled/50/000000/pause--v1.png  ';
+    miniPlayIcon.src = 'https://img.icons8.com/ios-filled/50/000000/pause--v1.png  ';
+  } else {
+    audioPlayer.pause();
+    playIcon.src = 'https://img.icons8.com/ios-filled/50/000000/play--v1.png  ';
+    miniPlayIcon.src = 'https://img.icons8.com/ios-filled/50/000000/play--v1.png  ';
+  }
+});
+
+miniPlayBtn.addEventListener('click', () => playBtn.click());
+
+skipBackBtn.addEventListener('click', () => {
+  if (currentTrackList.length === 0) return;
+  currentTrackIndex = Math.max(0, currentTrackIndex - 1);
+  const track = currentTrackList[currentTrackIndex];
+  if (track && track.src) {
+    playTrack(track.src, currentTrackIndex, currentTrackList, track.name);
+  } else {
+    currentTrackName = track ? track.name : '—';
+    updateMiniPlayer();
+  }
+});
+
+miniSkipBack.addEventListener('click', () => skipBackBtn.click());
+
+skipForwardBtn.addEventListener('click', () => {
+  if (currentTrackList.length === 0) return;
+  currentTrackIndex = Math.min(currentTrackList.length - 1, currentTrackIndex + 1);
+  const track = currentTrackList[currentTrackIndex];
+  if (track && track.src) {
+    playTrack(track.src, currentTrackIndex, currentTrackList, track.name);
+  } else {
+    currentTrackName = track ? track.name : '—';
+    updateMiniPlayer();
+  }
+});
+
+miniSkipForward.addEventListener('click', () => skipForwardBtn.click());
+
+audioPlayer.addEventListener('timeupdate', () => {
+  if (audioPlayer.duration) {
+    const percent = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+    progressBar.style.width = percent + '%';
+  }
+});
+
+progressContainer.addEventListener('click', e => {
+  const rect = progressContainer.getBoundingClientRect();
+  const percent = (e.clientX - rect.left) / rect.width;
+  audioPlayer.currentTime = percent * audioPlayer.duration;
+});
+
+volumeBar.addEventListener('input', () => {
+  audioPlayer.volume = volumeBar.value;
+  if (audioPlayer.volume === 0) {
+    volumeIcon.src = 'https://img.icons8.com/ios-filled/50/000000/mute.png  ';
+  } else {
+    volumeIcon.src = 'https://img.icons8.com/ios-filled/50/000000/medium-volume.png  ';
+  }
+});
+
+volumeIcon.addEventListener('click', () => {
+  if (audioPlayer.volume > 0) {
+    lastVolume = audioPlayer.volume;
+    audioPlayer.volume = 0;
+    volumeBar.value = 0;
+    volumeIcon.src = 'https://img.icons8.com/ios-filled/50/000000/mute.png  ';
+  } else {
+    audioPlayer.volume = lastVolume;
+    volumeBar.value = lastVolume;
+    volumeIcon.src = 'https://img.icons8.com/ios-filled/50/000000/medium-volume.png  ';
+  }
+});
+
+downloadBtn.addEventListener('click', () => {
+  if (audioPlayer.src) {
+    const a = document.createElement('a');
+    a.href = audioPlayer.src;
+    a.download = audioPlayer.src.split('/').pop().split('?')[0];
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+});
+
+// ✨ CREDITS BUTTON
+creditsBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  if (!currentAlbumId) return;
+
+  const creditsData = albumCredits[currentAlbumId];
+  creditsTitle.textContent = creditsData.title;
+  creditsFeatures.innerHTML = creditsData.features.map(f => `• ${f}`).join('<br>');
+  creditsProducers.innerHTML = creditsData.producers.map(p => `• ${p}`).join('<br>');
+
+  // Position near main popup
+  const mainPopup = document.getElementById('album-popup');
+  const rect = mainPopup.getBoundingClientRect();
+  creditsPopup.style.left = (rect.left - 300) + 'px';
+  creditsPopup.style.top = (rect.top + 50) + 'px';
+  creditsPopup.style.display = 'block';
+});
+
+closeCreditsBtn.addEventListener('click', () => {
+  creditsPopup.style.display = 'none';
+});
+
+// Make credits popup draggable
+makeDraggable(creditsPopup);
+
+// Minimize button logic
+minimizeBtn.addEventListener('click', () => {
+  document.getElementById('album-popup').style.display = 'none';
+  miniPlayer.style.display = 'flex';
+  updateMiniPlayer();
+});
+
+// Restore button logic
+restoreBtn.addEventListener('click', () => {
+  miniPlayer.style.display = 'none';
+  document.getElementById('album-popup').style.display = 'flex';
+});
+
+// Make mini player draggable within screen bounds
+makeDraggable(miniPlayer, true);
+
+// Album data + credits
+const albumCredits = {
+  'icon-1': {
+    title: 'ART – Credits',
+    features: ['Dante Warren, Felica Aylin, Fred P, James Blake, Julian Slater, Procol Harum, Stevie Wonder'],
+    producers: ['DYLNMBRY, No I.D., Ojivolta, Procol Harum, Twisco']
+  },
+  'icon-2': {
+    title: 'GOD COMPLEX – Credits',
+    features: ['Chantal Kreviazuk, Larry Graham'],
+    producers: ['DYLNMBRY']
+  },
+  'icon-3': {
+    title: 'SOMEDAY WE\'LL ALL BE FREE – Credits',
+    features: ['Donny Hathaway, DYLN'],
+    producers: ['DYLNMBRY']
+  },
+  'icon-4': {
+    title: 'KKKANCELED – Credits',
+    features: ['DYLN, Adolph Hitler, Nick Fuentes'],
+    producers: ['DYLNMBRY']
+  },
+  'icon-5': {
+    title: 'GODS NATION – Credits',
+    features: ['Victory Boyd, DYLN'],
+    producers: ['DYLNMBRY']
+  },
+  'icon-6': {
+    title: 'LOVE LOVE LOVE – Credits',
+    features: ['Donny Hathaway, DYLN'],
+    producers: ['DYLNMBRY']
+  },
+  'icon-7': {
+    title: 'dress – Credits',
+    features: ['DYLN'],
+    producers: ['DYLNMBRY']
+  },
+  
+};
+
+function openAlbumPopup(albumId) {
+  // Hide mini-player when opening full popup
+  miniPlayer.style.display = 'none';
+
+  const popup = document.getElementById('album-popup');
+  const cover = document.getElementById('popup-cover');
+  const name = document.getElementById('popup-name');
+  const artist = document.getElementById('popup-artist');
+  const trackList = document.getElementById('track-list');
+
+  const album = albumData[albumId];
+  cover.src = album.cover;
+  name.textContent = album.name;
+  artist.textContent = album.artist;
+  trackList.innerHTML = '';
+  album.tracks.forEach((track, index) => {
+    const li = document.createElement('li');
+    li.textContent = track.name;
+    li.addEventListener('click', () => {
+      playTrack(track.src, index, album.tracks, track.name);
+    });
+    trackList.appendChild(li);
+  });
+  currentTrackList = album.tracks;
+  currentAlbumId = albumId;
+  popup.style.display = 'flex';
+  currentTrackName = '—';
+  updateMiniPlayer();
+}
+
+['icon-1','icon-2','icon-3','icon-4','icon-5','icon-6','icon-7'].forEach(id => drag(document.getElementById(id)));
 </script>
 
 </body>
 </html>
-
