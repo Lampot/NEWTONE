@@ -5,17 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>newtone</title>
 
-<link rel="icon" href="https://i.imgur.com/9SD4qeq.png  " type="image/png">
+<link rel="icon" href="https://i.imgur.com/JNym9an.jpeg" type="image/png">
 
 <!-- Social Preview -->
 <meta property="og:title" content="newtone.world">
-<meta property="og:image" content="https://i.imgur.com/HeWLUZs.jpeg  ">
+<meta property="og:image" content="https://i.imgur.com/HeWLUZs.jpeg">
 <meta property="og:type" content="website">
 <meta property="og:description" content="newtone arts. music. fashion.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="NEWTONE">
-<meta name="twitter:image" content="https://i.imgur.com/HeWLUZs.jpeg  ">
-
+<meta name="twitter:image" content="https://i.imgur.com/HeWLUZs.jpeg">
 
 <style>
 * { box-sizing: border-box; }
@@ -94,7 +93,6 @@ footer a:hover { color: #000; }
   flex-direction: column;
   z-index: 1000;
 }
-/* Minimize button in top-right */
 .popup .minimize-btn {
   position: absolute;
   top: 12px;
@@ -175,6 +173,9 @@ footer a:hover { color: #000; }
   cursor: pointer;
   border-bottom: 1px solid #eee;
   font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .track-list li:last-child {
   border-bottom: none;
@@ -183,6 +184,22 @@ footer a:hover { color: #000; }
   background: #f0f0f0; 
   padding-left: 5px;
   padding-right: 5px;
+}
+.track-list li span.track-title {
+  flex-grow: 1;
+  cursor: pointer;
+}
+.track-list li .queue-add {
+  color: #888;
+  cursor: pointer;
+  padding: 0 8px;
+  user-select: none;
+  font-weight: bold;
+  min-width: 20px;
+  text-align: center;
+}
+.track-list li .queue-add.added {
+  color: #007aff;
 }
 
 .button-row {
@@ -220,9 +237,8 @@ footer a:hover { color: #000; }
 }
 #skip-forward img,
 #mini-skip-forward img {
-  transform: scaleX(-1); /* Now only applied to skip-back images */
+  transform: scaleX(-1);
 }
-/* Override for skip-forward to face right */
 #skip-forward-forward img,
 #mini-skip-forward-forward img {
   transform: none;
@@ -390,7 +406,6 @@ footer a:hover { color: #000; }
   width: 20px;
   height: 20px;
 }
-/* Restore button */
 #mini-player .restore-btn {
   background: #f0f0f0;
   border: none;
@@ -407,46 +422,105 @@ footer a:hover { color: #000; }
 #mini-player .restore-btn:hover {
   background: #e0e0e0;
 }
+
+/* ✨ QUEUE POPUP */
+#queue-popup {
+  position: fixed;
+  right: 20px;
+  bottom: 80px;
+  width: 320px;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+  padding: 20px;
+  display: none;
+  flex-direction: column;
+  z-index: 1000;
+}
+#queue-popup .close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #f0f0f0;
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  font-size: 18px;
+}
+#queue-popup .close-btn:hover {
+  background: #e0e0e0;
+}
+#queue-list {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+#queue-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+#queue-list li button {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 18px;
+  cursor: pointer;
+}
 </style>
 </head>
 <body>
 
 <div class="top-nav">
-  <a href="https://open.spotify.com/artist/6NvjKnOvxSoVbuv4uDhBgw?si=yjT02rTLQD6q53iWzrOo9Q  " target="_blank">music</a>
-  <a href="https://genius.com/artists/Dylnmbry  " target="_blank">lyrics</a>
+  <a href="https://open.spotify.com/artist/6NvjKnOvxSoVbuv4uDhBgw?si=yjT02rTLQD6q53iWzrOo9Q" target="_blank">music</a>
+  <a href="https://genius.com/artists/Dylnmbry" target="_blank">lyrics</a>
 </div>
 
 <div class="desktop" id="desktop">
   <a href="#" class="icon" id="icon-1">
-    <img src="https://i.imgur.com/DJv3wLD.jpeg    " alt="ART" />
+    <img src="https://i.imgur.com/DJv3wLD.jpeg" alt="ART" />
   </a>
   <a href="#" class="icon" id="icon-2">
-    <img src="https://i.imgur.com/jvQuqg0.jpeg    " alt="Album 2" />
+    <img src="https://i.imgur.com/jvQuqg0.jpeg" alt="Album 2" />
   </a>
   <a href="#" class="icon" id="icon-3">
-    <img src="https://i.imgur.com/99aYcpG.png  " alt="Album 3" />
+    <img src="https://i.imgur.com/99aYcpG.png" alt="Album 3" />
   </a>
   <a href="#" class="icon" id="icon-4">
-    <img src="https://i.imgur.com/IYp740d.jpeg    " alt="Album 4" />
+    <img src="https://i.imgur.com/IYp740d.jpeg" alt="Album 4" />
   </a>
   <a href="#" class="icon" id="icon-5">
-    <img src="https://i.imgur.com/vd2SfRR.jpeg   " alt="Album 5" />
+    <img src="https://i.imgur.com/vd2SfRR.jpeg" alt="Album 5" />
   </a>
     <a href="#" class="icon" id="icon-6">
-    <img src="https://i.imgur.com/1aL1gic.jpeg  " alt="Album 6" />
+    <img src="https://i.imgur.com/1aL1gic.jpeg" alt="Album 6" />
   </a>
      <a href="#" class="icon" id="icon-7">
-    <img src="https://i.imgur.com/hDy1LoM.jpeg  " alt="Album 7" />
+    <img src="https://i.imgur.com/hDy1LoM.jpeg" alt="Album 7" />
+  </a>
+       <a href="#" class="icon" id="icon-8">
+    <img src="https://i.imgur.com/05P1SPa.jpeg" alt="Album 8" />
   </a>
 </div>
 
 <footer>
-  <a href="https://www.instagram.com/bigdildodylan    " target="_blank">instagram</a> 
+  <a href="https://www.instagram.com/bigdildodylan" target="_blank">instagram</a> 
 </footer>
 
 <!-- Main Album Popup -->
 <div class="popup" id="album-popup">
-  <!-- Minimize button top-right -->
   <button class="minimize-btn" id="minimize-btn">–</button>
 
   <div class="popup-header">
@@ -454,7 +528,10 @@ footer a:hover { color: #000; }
     <div class="info">
       <div class="name" id="popup-name">Album Name</div>
       <div class="artist" id="popup-artist">Artist Name</div>
-      <a href="#" class="credits" id="credits-btn">credits -></a>
+      <div style="display: flex; gap: 12px; align-items: center;">
+        <a href="#" class="credits" id="queue-btn" style="color: grey; font-size: 14px; text-decoration: none;">queue →</a>
+        <a href="#" class="credits" id="credits-btn">credits →</a>
+      </div>
     </div>
   </div>
   <ul class="track-list" id="track-list"></ul>
@@ -462,23 +539,23 @@ footer a:hover { color: #000; }
   <div class="button-row">
     <div class="volume-control">
       <input type="range" class="volume-slider" id="volume-bar" min="0" max="1" step="0.01" value="1"/>
-      <img src="https://img.icons8.com/ios-filled/50/000000/medium-volume.png    " id="volume-icon"/>
+      <img src="https://img.icons8.com/ios-filled/50/000000/medium-volume.png" id="volume-icon"/>
     </div>
 
     <div class="play-group">
       <button id="skip-back">
-        <img src="https://img.icons8.com/ios-filled/50/000000/rewind--v1.png    " />
+        <img src="https://img.icons8.com/ios-filled/50/000000/rewind--v1.png" />
       </button>
       <button id="play-pause">
-        <img src="https://img.icons8.com/ios-filled/50/000000/play--v1.png    " id="play-icon"/>
+        <img src="https://img.icons8.com/ios-filled/50/000000/play--v1.png" id="play-icon"/>
       </button>
       <button id="skip-forward">
-        <img src="https://img.icons8.com/ios-filled/50/000000/rewind--v1.png    " id="skip-forward-img"/>
+        <img src="https://img.icons8.com/ios-filled/50/000000/rewind--v1.png" id="skip-forward-img"/>
       </button>
     </div>
 
     <button class="download">
-      <img src="https://img.icons8.com/ios-filled/50/000000/download--v1.png    " id="download-icon"/>
+      <img src="https://img.icons8.com/ios-filled/50/000000/download--v1.png" id="download-icon"/>
     </button>
   </div>
 
@@ -511,16 +588,63 @@ footer a:hover { color: #000; }
   </div>
   <div class="controls">
     <button id="mini-skip-back">
-      <img src="https://img.icons8.com/ios-filled/50/000000/rewind--v1.png    " />
+      <img src="https://img.icons8.com/ios-filled/50/000000/rewind--v1.png" />
     </button>
     <button id="mini-play-pause">
-      <img src="https://img.icons8.com/ios-filled/50/000000/play--v1.png    " id="mini-play-icon"/>
+      <img src="https://img.icons8.com/ios-filled/50/000000/play--v1.png" id="mini-play-icon"/>
     </button>
     <button id="mini-skip-forward">
-      <img src="https://img.icons8.com/ios-filled/50/000000/rewind--v1.png    " id="mini-skip-forward-img"/>
+      <img src="https://img.icons8.com/ios-filled/50/000000/rewind--v1.png" id="mini-skip-forward-img"/>
     </button>
   </div>
   <button class="restore-btn" id="restore-btn">⤢</button>
+</div>
+
+<!-- ✨ QUEUE POPUP -->
+<div id="queue-popup">
+  <button class="close-btn" id="close-queue">×</button>
+  <strong style="font-size: 16px;">Up Next</strong>
+  <ul id="queue-list"></ul>
+</div>
+
+<!-- ⚠️ CONTENT WARNING POPUP -->
+<div id="warning-popup" style="
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+">
+  <div style="
+    background: #fff;
+    padding: 24px;
+    border-radius: 16px;
+    max-width: 400px;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    color: #333;
+  ">
+    <h3 style="margin-top: 0; font-size: 18px;">Content Warning</h3>
+    <p style="font-size: 14px; line-height: 1.5;">
+      The album you're about to view contains themes and language that may be offensive, disturbing, or sensitive.
+      It includes references to hate symbols, historical atrocities, and provocative political content.
+    </p>
+    <p style="font-size: 13px; color: #888;">
+      Listener discretion is strongly advised.
+    </p>
+    <div style="margin-top: 20px; display: flex; gap: 12px; justify-content: center;">
+      <button id="warning-cancel" style="
+        background: #eee; border: none; padding: 8px 16px;
+        border-radius: 6px; cursor: pointer; font-family: inherit;
+      ">Go Back</button>
+      <button id="warning-proceed" style="
+        background: #ff4444; color: white; border: none; padding: 8px 16px;
+        border-radius: 6px; cursor: pointer; font-family: inherit;
+      ">Proceed</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -618,7 +742,6 @@ const playBtn = document.getElementById('play-pause');
 const playIcon = document.getElementById('play-icon');
 const skipBackBtn = document.getElementById('skip-back');
 const skipForwardBtn = document.getElementById('skip-forward');
-const skipForwardImg = document.getElementById('skip-forward-img');
 const progressContainer = document.getElementById('progress-container');
 const progressBar = document.getElementById('progress-bar');
 const volumeBar = document.getElementById('volume-bar');
@@ -638,7 +761,6 @@ const miniPlayBtn = document.getElementById('mini-play-pause');
 const miniPlayIcon = document.getElementById('mini-play-icon');
 const miniSkipBack = document.getElementById('mini-skip-back');
 const miniSkipForward = document.getElementById('mini-skip-forward');
-const miniSkipForwardImg = document.getElementById('mini-skip-forward-img');
 const restoreBtn = document.getElementById('restore-btn');
 
 let currentTrackIndex = 0;
@@ -646,11 +768,189 @@ let currentTrackList = [];
 let lastVolume = 1;
 let currentAlbumId = null;
 let currentTrackName = '—';
+let isPlayingFromQueue = false;
 
-// Store preloaded audio elements by albumId → trackIndex
 const preloadedAudios = {};
 
+// QUEUE SYSTEM
+let playQueue = [];
+
+function addToQueue(albumId, trackIndex, plusBtn) {
+  const album = albumData[albumId];
+  const track = album.tracks[trackIndex];
+  if (!track.src) return;
+
+  const alreadyInQueue = playQueue.some(q => q.albumId === albumId && q.trackIndex === trackIndex);
+  if (alreadyInQueue) return;
+
+  playQueue.push({
+    albumId,
+    trackIndex,
+    name: track.name,
+    src: track.src,
+    cover: album.cover,
+    albumName: album.name
+  });
+
+  plusBtn.textContent = '✓';
+  plusBtn.classList.add('added');
+  renderQueue();
+}
+
+function renderQueue() {
+  const queueList = document.getElementById('queue-list');
+  queueList.innerHTML = '';
+  playQueue.forEach((item, index) => {
+    const li = document.createElement('li');
+    li.innerHTML = `
+      <span style="overflow: hidden; text-overflow: ellipsis;">${item.name}</span>
+      <button class="remove-from-queue" data-index="${index}">×</button>
+    `;
+    queueList.appendChild(li);
+  });
+
+  document.querySelectorAll('.remove-from-queue').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const idx = parseInt(e.target.dataset.index);
+      playQueue.splice(idx, 1);
+      renderQueue();
+    });
+  });
+}
+
+function playTrack(src, index, trackList, name, fromQueue = false, queueItem = null) {
+  if (!src) {
+    currentTrackName = name || '—';
+    updateMiniPlayer();
+    return;
+  }
+  audioPlayer.src = src;
+  audioPlayer.play();
+  playIcon.src = 'https://img.icons8.com/ios-filled/50/000000/pause--v1.png';
+  miniPlayIcon.src = 'https://img.icons8.com/ios-filled/50/000000/pause--v1.png';
+  currentTrackIndex = index;
+  currentTrackList = fromQueue ? [] : trackList || [];
+  currentTrackName = name || '—';
+  isPlayingFromQueue = fromQueue;
+  if (fromQueue && queueItem) {
+    currentAlbumId = queueItem.albumId;
+  }
+  updateMiniPlayer();
+}
+
+const albumData = {
+  'icon-1': {
+    name: 'ART',
+    artist: 'DYLN',
+    cover: 'https://i.imgur.com/DJv3wLD.jpeg',
+    tracks: [
+      { name: '1. BIRDS AND ANGELS', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/Birds%20and%20Angels.mp3' },
+      { name: '2. SELFISH', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/SELFISH%20BEST%20VER%20(1).mp3' },
+      { name: '3. QUIET', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/QUIET%20(feat.%20Julian%20Slater%2C%20Dante%20Warren).mp3' },
+      { name: '4. SOMETIMES', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/sometimes%20art.mp3' },
+      { name: '5. THIS FOR US', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/LIFESIZE%20(feat.%20Dante%20Warren).mp3' },
+      { name: '6. THINGS CHANGE', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/thnsgschange.mp3' },
+      { name: '7. FLOWERS GROW', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/flowers%20grow%20dantee.mp3' },
+      { name: '8. OVERDOSE', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/OVERDOSE.mp3' },
+      { name: '9. BELIEVE', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/believe%20art.mp3' },
+      { name: '10. NEBRASKA', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/NEBRASKA%20TO%20ALASKA.mp3' },
+      { name: '11. IS IT OVER?', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/IS%20IT%20OVER%20(feat.%20Felica%20Aylin).mp3' }
+    ]
+  },
+  'icon-2': {
+    name: 'GOD COMPLEX',
+    artist: 'DYLN',
+    cover: 'https://i.imgur.com/jvQuqg0.jpeg',
+    tracks: [
+      { name: '1. I NEED YOU HOME', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/I%20NEED%20YOU%20HOME.mp3' },
+      { name: '2. CIVIL RIGHTS SIGN', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/CIVIL%20RIGHTS%20SIGN.mp3' },
+      { name: '3. SEND THIS B!TCH UP', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/SEND%20THIS%20BITCH%20UP.mp3' },
+      { name: '4. A WHOLE LOT', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/A%20WHOLE%20LOT%20(1).mp3' },
+      { name: '5. STRIPPER TO CEO', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/STRIPPER%20TO%20CEO.mp3' },
+      { name: '6. HEAVEN', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/HEAVEN.mp3' },
+    ]
+  },
+  'icon-3': {
+    name: 'FREEDOM, FREEDOM',
+    artist: 'DYLN, Donny Hathaway',
+    cover: 'https://i.imgur.com/99aYcpG.png',
+    tracks: [
+      { name: 'FEAR', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/fear.mp3' },
+      { name: 'UNLOCK', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/UNLOCK.mp3' },
+      { name: 'PRAY', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/PRAY.mp3' },
+      { name: 'LUCIFER', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/lucifer.mp3' },
+      { name: 'VATICAN', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/VATICAN.mp3' },
+      { name: 'LOVE LOVE LOVE', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/Love%20Love%20Love.mp3' },
+      { name: 'SOMEDAY WE\'LL ALL BE FREE', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/SOMEDAY%20WELL%20ALL%20BE%20FREE.mp3' },
+    ]
+  },
+  'icon-4': {
+    name: 'KKKANCELED',
+    artist: 'DYLN',
+    cover: 'https://i.imgur.com/IYp740d.jpeg',
+    tracks: [
+      { name: 'TRACKS REMOVED', src: '' },
+    ]
+  },
+  'icon-5': {
+    name: 'GODS NATION',
+    artist: 'DYLN',
+    cover: 'https://i.imgur.com/vd2SfRR.jpeg',
+    tracks: [
+      { name: 'SWEET JESUS', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/SWEET%20JESUS.mp3' },
+      { name: 'AWAKENING', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/Awakening.mp3' },
+      { name: 'OUR FATHER', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/OUR%20FATHER.mp3' },
+      { name: 'THROUGH THE VALLEY', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/THROUGH%20THE%20VALLEY.mp3' },
+      { name: 'HEALING', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/HEALING.mp3' },
+    ]
+  },
+  'icon-6': {
+    name: 'LOVE LOVE LOVE',
+    artist: 'DYLN',
+    cover: 'https://i.imgur.com/1aL1gic.jpeg',
+    tracks: [
+      { name: '1. LOVE LOVE LOVE', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/Love%20Love%20Love.mp3' },
+    ]
+  },
+  'icon-7': {
+    name: 'dress',
+    artist: 'DYLN',
+    cover: 'https://i.imgur.com/hDy1LoM.jpeg',
+    tracks: [
+      { name: '1. dress', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/DRESS.mp3' },
+    ]
+  },
+  'icon-8': {
+    name: 'NEW AGAIN',
+    artist: 'DYLN',
+    cover: 'https://i.imgur.com/05P1SPa.jpeg',
+    tracks: [
+      { name: 'FOREVER', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/FLOREVER%20GLORY.mp3' },
+      { name: 'LIFESTYLE', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/LIFESTYLE.mp3' },
+      { name: 'NEW AGAIN', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/NEW%20AGAIN.mp3' },
+      { name: 'SIMULATION CHANGE', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/SIMULATION%20CHANGE.mp3' },
+      { name: 'FEELS ALRIGHT', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/FEELS%20ALRIGHT.mp3' },
+      { name: 'WRAP YOUR ARMS', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/WRAP%20YOUR%20ARMS.mp3' },
+      { name: 'SHOLDER TO LEAN ON', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/SHOLDER%20TO%20LEAN%20ON.mp3' },
+      { name: 'UP FROM THE ASHES', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/UP%20FROM%20THE%20ASHES.mp3' },
+      { name: 'L.A. MONSTER', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/L.A%20MONSTER.mp3' },
+      { name: 'COME TO LIFE', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/COME%20TO%20LIFE.mp3' },
+    ]
+  }
+};
+
+let pendingAlbumId = null;
+
 function openAlbumPopup(albumId) {
+  if (albumId === 'icon-3' || albumId === 'icon-4') {
+    pendingAlbumId = albumId;
+    document.getElementById('warning-popup').style.display = 'flex';
+    return;
+  }
+  _openAlbumPopup(albumId);
+}
+
+function _openAlbumPopup(albumId) {
   miniPlayer.style.display = 'none';
 
   const popup = document.getElementById('album-popup');
@@ -665,34 +965,48 @@ function openAlbumPopup(albumId) {
   artist.textContent = album.artist;
   trackList.innerHTML = '';
 
-  // Ensure preloadedAudios for this album exists
   if (!preloadedAudios[albumId]) {
     preloadedAudios[albumId] = {};
   }
 
   album.tracks.forEach((track, index) => {
     const li = document.createElement('li');
-    li.textContent = track.name;
 
-    // Preload this track if not already done and has a valid src
+    const titleSpan = document.createElement('span');
+    titleSpan.className = 'track-title';
+    titleSpan.textContent = track.name;
+
+    const plusBtn = document.createElement('span');
+    plusBtn.className = 'queue-add';
+    plusBtn.textContent = '+';
+
+    li.appendChild(titleSpan);
+    li.appendChild(plusBtn);
+
     if (track.src && !preloadedAudios[albumId][index]) {
       const preloadAudio = new Audio(track.src);
       preloadAudio.preload = 'auto';
-      preloadAudio.load(); // Trigger loading
+      preloadAudio.load();
       preloadedAudios[albumId][index] = preloadAudio;
     }
 
-    li.addEventListener('click', () => {
-      // Set main player source (browser will use cache if already loaded)
+    titleSpan.addEventListener('click', () => {
       audioPlayer.src = track.src;
       audioPlayer.play();
-      playIcon.src = 'https://img.icons8.com/ios-filled/50/000000/pause--v1.png    ';
-      miniPlayIcon.src = 'https://img.icons8.com/ios-filled/50/000000/pause--v1.png    ';
+      playIcon.src = 'https://img.icons8.com/ios-filled/50/000000/pause--v1.png';
+      miniPlayIcon.src = 'https://img.icons8.com/ios-filled/50/000000/pause--v1.png';
       currentTrackIndex = index;
       currentTrackList = album.tracks;
       currentTrackName = track.name;
       currentAlbumId = albumId;
+      isPlayingFromQueue = false;
       updateMiniPlayer();
+    });
+
+    plusBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      addToQueue(albumId, index, plusBtn);
+      document.getElementById('queue-popup').style.display = 'flex';
     });
 
     trackList.appendChild(li);
@@ -713,120 +1027,43 @@ function updateMiniPlayer() {
   miniTitle.textContent = currentTrackName;
 }
 
-const albumData = {
-  'icon-1': {
-    name: 'ART',
-    artist: 'DYLN',
-    cover: 'https://i.imgur.com/DJv3wLD.jpeg    ',
-    tracks: [
-      { name: '1. BIRDS AND ANGELS', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/Birds%20and%20Angels.mp3    ' },
-      { name: '2. SELFISH', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/SELFISH%20BEST%20VER%20(1).mp3' },
-      { name: '3. QUIET', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/QUIET%20(feat.%20Julian%20Slater%2C%20Dante%20Warren).mp3' },
-      { name: '4. SOMETIMES', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/sometimes%20art.mp3    ' },
-      { name: '5. THIS FOR US', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/LIFESIZE%20(feat.%20Dante%20Warren).mp3' },
-      { name: '6. THINGS CHANGE', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/thnsgschange.mp3    ' },
-      { name: '7. FLOWERS GROW', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/flowers%20grow%20dantee.mp3    ' },
-      { name: '8. OVERDOSE', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/OVERDOSE.mp3    ' },
-      { name: '9. BELIEVE', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/believe%20art.mp3    ' },
-      { name: '10. NEBRASKA', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/NEBRASKA%20TO%20ALASKA.mp3    ' },
-      { name: '11. IS IT OVER?', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/IS%20IT%20OVER%20(feat.%20Felica%20Aylin).mp3' }
-    ]
-  },
-  'icon-2': {
-    name: 'GOD COMPLEX',
-    artist: 'DYLN',
-    cover: 'https://i.imgur.com/jvQuqg0.jpeg    ',
-    tracks: [
-      { name: '1. I NEED YOU HOME', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/I%20NEED%20YOU%20HOME.mp3    ' },
-      { name: '2. CIVIL RIGHTS SIGN', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/CIVIL%20RIGHTS%20SIGN.mp3    ' },
-      { name: '3. SEND THIS B!TCH UP', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/SEND%20THIS%20BITCH%20UP.mp3    ' },
-      { name: '4. A WHOLE LOT', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/A%20WHOLE%20LOT%20(1).mp3' },
-      { name: '5. STRIPPER TO CEO', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/STRIPPER%20TO%20CEO.mp3    ' },
-      { name: '6. HEAVEN', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/HEAVEN.mp3    ' },
-    ]
-  },
-  'icon-3': {
-    name: 'NEWTONE ERA',
-    artist: 'DYLN, Donny Hathaway',
-    cover: 'https://i.imgur.com/99aYcpG.png',
-    tracks: [
-      { name: '1. FEAR', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/fear.mp3' },
-      { name: '2. LUCIFER', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/lucifer.mp3' },
-      { name: '3. UNLOCK', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/UNLOCK.mp3' },
-      { name: '4. VATICAN', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/VATICAN.mp3' },
-      { name: '5. LOVE LOVE LOVE', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/Love%20Love%20Love.mp3' },
-      { name: '6. SOMEDAY WE\'LL ALL BE FREE', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/SOMEDAY%20WELL%20ALL%20BE%20FREE.mp3' },
-    
-    ]
-  },
-  'icon-4': {
-    name: 'KKKANCELED',
-    artist: 'DYLN',
-    cover: 'https://i.imgur.com/IYp740d.jpeg    ',
-    tracks: [
-      { name: 'TRACKS REMOVED', src: '' },
-    ]
-  },
-  'icon-5': {
-    name: 'GODS NATION',
-    artist: 'DYLN',
-    cover: 'https://i.imgur.com/vd2SfRR.jpeg   ',
-    tracks: [
-      { name: 'SWEET JESUS', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/SWEET%20JESUS.mp3  ' },
-      { name: 'AWAKENING', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/Awakening.mp3  ' },
-      { name: 'OUR FATHER', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/OUR%20FATHER.mp3  ' },
-      { name: 'THROUGH THE VALLEY', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/THROUGH%20THE%20VALLEY.mp3  ' },
-      { name: 'HEALING', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/HEALING.mp3  ' },
-    ]
-  },
-  'icon-6': {
-    name: 'LOVE LOVE LOVE',
-    artist: 'DYLN',
-    cover: 'https://i.imgur.com/1aL1gic.jpeg   ',
-    tracks: [
-      { name: '1. LOVE LOVE LOVE', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/Love%20Love%20Love.mp3  ' },
-    ]
-  },
-    'icon-7': {
-    name: 'dress',
-    artist: 'DYLN',
-    cover: 'https://i.imgur.com/hDy1LoM.jpeg   ',
-    tracks: [
-      { name: '1. dress', src: 'https://raw.githubusercontent.com/Lampot/NEWTONE/main/Music/DRESS.mp3  ' },
-    ]
-  },
-  
-};
-
 playBtn.addEventListener('click', () => {
   if (audioPlayer.paused) {
     audioPlayer.play();
-    playIcon.src = 'https://img.icons8.com/ios-filled/50/000000/pause--v1.png    ';
-    miniPlayIcon.src = 'https://img.icons8.com/ios-filled/50/000000/pause--v1.png    ';
+    playIcon.src = 'https://img.icons8.com/ios-filled/50/000000/pause--v1.png';
+    miniPlayIcon.src = 'https://img.icons8.com/ios-filled/50/000000/pause--v1.png';
   } else {
     audioPlayer.pause();
-    playIcon.src = 'https://img.icons8.com/ios-filled/50/000000/play--v1.png    ';
-    miniPlayIcon.src = 'https://img.icons8.com/ios-filled/50/000000/play--v1.png    ';
+    playIcon.src = 'https://img.icons8.com/ios-filled/50/000000/play--v1.png';
+    miniPlayIcon.src = 'https://img.icons8.com/ios-filled/50/000000/play--v1.png';
   }
 });
 
 miniPlayBtn.addEventListener('click', () => playBtn.click());
 
 skipBackBtn.addEventListener('click', () => {
-  if (currentTrackList.length === 0) return;
+  if (currentTrackList.length === 0 && playQueue.length === 0) return;
+  if (isPlayingFromQueue || currentTrackIndex === 0) {
+    return;
+  }
   currentTrackIndex = Math.max(0, currentTrackIndex - 1);
   const track = currentTrackList[currentTrackIndex];
   if (track && track.src) {
     playTrack(track.src, currentTrackIndex, currentTrackList, track.name);
-  } else {
-    currentTrackName = track ? track.name : '—';
-    updateMiniPlayer();
   }
 });
 
 miniSkipBack.addEventListener('click', () => skipBackBtn.click());
 
-skipForwardBtn.addEventListener('click', () => {
+skipForwardBtn.replaceWith(skipForwardBtn.cloneNode(true));
+document.getElementById('skip-forward').addEventListener('click', () => {
+  if (playQueue.length > 0) {
+    const nextInQueue = playQueue.shift();
+    renderQueue();
+    playTrack(nextInQueue.src, 0, [], nextInQueue.name, true, nextInQueue);
+    return;
+  }
+
   if (currentTrackList.length === 0) return;
   currentTrackIndex = Math.min(currentTrackList.length - 1, currentTrackIndex + 1);
   const track = currentTrackList[currentTrackIndex];
@@ -838,23 +1075,7 @@ skipForwardBtn.addEventListener('click', () => {
   }
 });
 
-miniSkipForward.addEventListener('click', () => skipForwardBtn.click());
-
-function playTrack(src, index, trackList, name) {
-  if (!src) {
-    currentTrackName = name || '—';
-    updateMiniPlayer();
-    return;
-  }
-  audioPlayer.src = src;
-  audioPlayer.play();
-  playIcon.src = 'https://img.icons8.com/ios-filled/50/000000/pause--v1.png    ';
-  miniPlayIcon.src = 'https://img.icons8.com/ios-filled/50/000000/pause--v1.png    ';
-  currentTrackIndex = index;
-  currentTrackList = trackList || [];
-  currentTrackName = name || '—';
-  updateMiniPlayer();
-}
+miniSkipForward.addEventListener('click', () => document.getElementById('skip-forward').click());
 
 audioPlayer.addEventListener('timeupdate', () => {
   if (audioPlayer.duration) {
@@ -862,15 +1083,21 @@ audioPlayer.addEventListener('timeupdate', () => {
     progressBar.style.width = percent + '%';
   }
 });
+
 audioPlayer.addEventListener('ended', () => {
+  if (playQueue.length > 0) {
+    const nextInQueue = playQueue.shift();
+    renderQueue();
+    playTrack(nextInQueue.src, 0, [], nextInQueue.name, true, nextInQueue);
+    return;
+  }
+
   if (currentTrackList.length === 0 || currentTrackIndex >= currentTrackList.length - 1) {
-    // No more tracks — stop or stay on last track
     playIcon.src = 'https://img.icons8.com/ios-filled/50/000000/play--v1.png';
     miniPlayIcon.src = 'https://img.icons8.com/ios-filled/50/000000/play--v1.png';
     return;
   }
 
-  // Move to next track
   currentTrackIndex++;
   const nextTrack = currentTrackList[currentTrackIndex];
   if (nextTrack && nextTrack.src) {
@@ -892,9 +1119,9 @@ progressContainer.addEventListener('click', e => {
 volumeBar.addEventListener('input', () => {
   audioPlayer.volume = volumeBar.value;
   if (audioPlayer.volume === 0) {
-    volumeIcon.src = 'https://img.icons8.com/ios-filled/50/000000/mute.png    ';
+    volumeIcon.src = 'https://img.icons8.com/ios-filled/50/000000/mute.png';
   } else {
-    volumeIcon.src = 'https://img.icons8.com/ios-filled/50/000000/medium-volume.png    ';
+    volumeIcon.src = 'https://img.icons8.com/ios-filled/50/000000/medium-volume.png';
   }
 });
 
@@ -903,11 +1130,11 @@ volumeIcon.addEventListener('click', () => {
     lastVolume = audioPlayer.volume;
     audioPlayer.volume = 0;
     volumeBar.value = 0;
-    volumeIcon.src = 'https://img.icons8.com/ios-filled/50/000000/mute.png    ';
+    volumeIcon.src = 'https://img.icons8.com/ios-filled/50/000000/mute.png';
   } else {
     audioPlayer.volume = lastVolume;
     volumeBar.value = lastVolume;
-    volumeIcon.src = 'https://img.icons8.com/ios-filled/50/000000/medium-volume.png    ';
+    volumeIcon.src = 'https://img.icons8.com/ios-filled/50/000000/medium-volume.png';
   }
 });
 
@@ -922,48 +1149,6 @@ downloadBtn.addEventListener('click', () => {
   }
 });
 
-// ✨ CREDITS BUTTON
-creditsBtn.addEventListener('click', (e) => {
-  e.preventDefault();
-  if (!currentAlbumId) return;
-
-  const creditsData = albumCredits[currentAlbumId];
-  creditsTitle.textContent = creditsData.title;
-  creditsFeatures.innerHTML = creditsData.features.map(f => `• ${f}`).join('<br>');
-  creditsProducers.innerHTML = creditsData.producers.map(p => `• ${p}`).join('<br>');
-
-  // Position near main popup
-  const mainPopup = document.getElementById('album-popup');
-  const rect = mainPopup.getBoundingClientRect();
-  creditsPopup.style.left = (rect.left - 300) + 'px';
-  creditsPopup.style.top = (rect.top + 50) + 'px';
-  creditsPopup.style.display = 'block';
-});
-
-closeCreditsBtn.addEventListener('click', () => {
-  creditsPopup.style.display = 'none';
-});
-
-// Make credits popup draggable
-makeDraggable(creditsPopup);
-
-// Minimize button logic
-minimizeBtn.addEventListener('click', () => {
-  document.getElementById('album-popup').style.display = 'none';
-  miniPlayer.style.display = 'flex';
-  updateMiniPlayer();
-});
-
-// Restore button logic
-restoreBtn.addEventListener('click', () => {
-  miniPlayer.style.display = 'none';
-  document.getElementById('album-popup').style.display = 'flex';
-});
-
-// Make mini player draggable within screen bounds
-makeDraggable(miniPlayer, true);
-
-// Album data + credits
 const albumCredits = {
   'icon-1': {
     title: 'ART – Credits',
@@ -1000,10 +1185,75 @@ const albumCredits = {
     features: ['DYLN'],
     producers: ['DYLNMBRY']
   },
-  
+  'icon-8': {
+    title: 'NEW AGAIN – Credits',
+    features: ['DYLN'],
+    producers: ['DYLNMBRY']
+  }
 };
 
-['icon-1','icon-2','icon-3','icon-4','icon-5','icon-6','icon-7'].forEach(id => drag(document.getElementById(id)));
+creditsBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  if (!currentAlbumId) return;
+
+  const creditsData = albumCredits[currentAlbumId];
+  creditsTitle.textContent = creditsData.title;
+  creditsFeatures.innerHTML = creditsData.features.map(f => `• ${f}`).join('<br>');
+  creditsProducers.innerHTML = creditsData.producers.map(p => `• ${p}`).join('<br>');
+
+  const mainPopup = document.getElementById('album-popup');
+  const rect = mainPopup.getBoundingClientRect();
+  creditsPopup.style.left = (rect.left - 300) + 'px';
+  creditsPopup.style.top = (rect.top + 50) + 'px';
+  creditsPopup.style.display = 'block';
+});
+
+closeCreditsBtn.addEventListener('click', () => {
+  creditsPopup.style.display = 'none';
+});
+
+makeDraggable(creditsPopup);
+
+minimizeBtn.addEventListener('click', () => {
+  document.getElementById('album-popup').style.display = 'none';
+  miniPlayer.style.display = 'flex';
+  updateMiniPlayer();
+});
+
+restoreBtn.addEventListener('click', () => {
+  miniPlayer.style.display = 'none';
+  document.getElementById('album-popup').style.display = 'flex';
+});
+
+makeDraggable(miniPlayer, true);
+
+document.getElementById('queue-btn').addEventListener('click', (e) => {
+  e.preventDefault();
+  document.getElementById('queue-popup').style.display = 'flex';
+});
+
+document.getElementById('close-queue').addEventListener('click', () => {
+  document.getElementById('queue-popup').style.display = 'none';
+});
+
+makeDraggable(document.getElementById('queue-popup'));
+
+// Warning popup handlers
+document.getElementById('warning-cancel').addEventListener('click', () => {
+  document.getElementById('warning-popup').style.display = 'none';
+  pendingAlbumId = null;
+});
+
+document.getElementById('warning-proceed').addEventListener('click', () => {
+  document.getElementById('warning-popup').style.display = 'none';
+  if (pendingAlbumId) {
+    _openAlbumPopup(pendingAlbumId);
+    pendingAlbumId = null;
+  }
+});
+
+['icon-1','icon-2','icon-3','icon-4','icon-5','icon-6','icon-7','icon-8'].forEach(id => drag(document.getElementById(id)));
+
 </script>
 
 </body>
