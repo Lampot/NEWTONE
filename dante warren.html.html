@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>newtone — dante warren</title>
+  <meta name="description" content="about dante warren — artist with newtone" />
+  <link rel="icon" href="https://i.imgur.com/JNym9an.jpeg" type="image/png">
+  <style>
+    /* reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      background: #f1f1f1;
+      color: #5a5a5a;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      letter-spacing: 0.02em;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      position: relative;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: #f1f1f1;
+      border-bottom: 1px solid #d6d6d6;
+      display: flex;
+      justify-content: flex-start;
+      padding: 12px 24px;
+      z-index: 1000;
+    }
+
+    .navbar a {
+      margin-right: 24px;
+      font-size: 12px;
+      text-transform: lowercase;
+      color: #5a5a5a;
+      text-decoration: none;
+      opacity: 0.7;
+      transition: opacity 0.25s ease;
+    }
+
+    .navbar a:hover {
+      opacity: 1;
+      border-bottom: 1px solid #bdbdbd;
+    }
+
+    .container {
+      max-width: 720px;
+      padding: 80px 28px 48px 28px;
+      margin: 0 auto;
+    }
+
+    .eyebrow {
+      font-size: 12px;
+      text-transform: lowercase;
+      opacity: 0.5;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 400;
+      margin-bottom: 32px;
+      text-transform: lowercase;
+    }
+
+    p {
+      font-size: 14px;
+      line-height: 1.9;
+      margin-bottom: 22px;
+      text-transform: lowercase;
+    }
+
+    .divider {
+      width: 60px;
+      height: 1px;
+      background: #cfcfcf;
+      margin: 36px 0;
+    }
+
+    .meta {
+      font-size: 12px;
+      opacity: 0.45;
+      line-height: 1.7;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border 0.2s ease, opacity 0.2s ease;
+    }
+
+    a:hover {
+      border-bottom: 1px solid #bdbdbd;
+      opacity: 0.7;
+    }
+
+    .music-link {
+      display: inline-block;
+      margin-top: 32px;
+      font-size: 12px;
+      text-transform: lowercase;
+      opacity: 0.45;
+      border-bottom: 1px solid #cfcfcf;
+      transition: opacity 0.25s ease;
+    }
+
+    .music-link:hover {
+      opacity: 0.75;
+    }
+
+    .listen-label {
+      font-size: 12px;
+      text-transform: lowercase;
+      opacity: 0.6;
+      margin: 24px 0 8px 0;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 100px 22px 48px 22px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+    }
+
+    /* contact click */
+    .contact-trigger {
+      position: fixed;
+      bottom: 18px;
+      left: 20px;
+      font-size: 12px;
+      opacity: 0.5;
+      color: #8a8a8a;
+      cursor: pointer;
+      text-transform: lowercase;
+      user-select: none;
+      z-index: 999;
+    }
+
+    .contact-box {
+      position: fixed;
+      bottom: 48px;
+      left: 20px;
+      width: 220px;
+      padding: 14px;
+      background: rgba(245,245,245,0.96);
+      border: 1px solid #d6d6d6;
+      font-size: 12px;
+      line-height: 1.7;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(8px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      z-index: 998;
+    }
+
+    .contact-box.open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+
+    .contact-box span {
+      display: block;
+      opacity: 0.45;
+      margin-bottom: 8px;
+    }
+
+    .contact-box a,
+    .contact-box .copy {
+      display: block;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="https://newtone.world/">home</a>
+    <a href="https://newtone.world/music.html">artists</a>
+  </nav>
+
+  <main class="container">
+    <div class="eyebrow">about</div>
+
+    <h1>dante warren</h1>
+
+    <p>
+      dante warren is an artist moving inside the newtone world.
+      the work lives between feeling and fracture, melody and silence,
+      saying enough without explaining too much.
+    </p>
+
+    <p>
+      his music is not designed to arrive clean.
+      it drifts, it lingers, it leaves gaps on purpose.
+      some songs feel unfinished. some feel too honest.
+      that tension is the point.
+    </p>
+
+    <p>
+      with newtone, dante exists as part of a wider signal.
+      not a product, not a persona.
+      just motion, sound, and intention moving forward
+      without asking permission.
+
+    <a class="music-link" href="https://open.spotify.com/track/3OgAtoAst5E66FWpT5R4tK?si=bac532c4cf034538" target="_blank">
+      Listen to dante’s latest track "THIS IS MAGIC" on Spotify
+    </a>
+
+    <p class="meta">
+      newtone is a space for artists who don’t resolve.
+      who sit inside uncertainty.
+      who let the work speak quietly.
+    </p>
+  </main>
+
+  <div class="contact-trigger" id="contactToggle">contact</div>
+  <div class="contact-box" id="contactBox">
+    <span>signals</span>
+    <div class="copy" data-copy="newtone.inquires@gmail.com">newtone.inquires@gmail.com</div>
+    <a href="https://instagram.com/newtone.world" target="_blank">outside</a>
+    <a href="https://open.spotify.com/artist/4QES3a0iVXMZmDaNTHqh5a?si=gTxeJWZ8RaqOYAbnIMv3nw" target="_blank">elsewhere</a>
+  </div>
+
+  <script>
+    const toggle = document.getElementById('contactToggle');
+    const box = document.getElementById('contactBox');
+
+    toggle.addEventListener('click', () => {
+      box.classList.toggle('open');
+    });
+
+    document.querySelectorAll('[data-copy]').forEach(el => {
+      el.addEventListener('click', () => {
+        navigator.clipboard.writeText(el.dataset.copy);
+        el.style.opacity = 0.3;
+        setTimeout(() => el.style.opacity = 1, 600);
+      });
+    });
+  </script>
+</body>
+</html>
