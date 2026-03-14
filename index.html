@@ -3,104 +3,92 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>newtone.world</title>
-
-  <link rel="icon" href="https://i.imgur.com/JNym9an.jpeg" type="image/png">
-
-<!-- Social Preview -->
-<meta property="og:title" content="newtone.world">
-<meta property="og:image" content="https://i.imgur.com/HeWLUZs.jpeg">
-<meta property="og:type" content="website">
-<meta property="og:description" content="newtone arts. music. fashion.">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="NEWTONE">
-<meta name="twitter:image" content="https://i.imgur.com/HeWLUZs.jpeg">
-
+<title>Coming Soon</title>
+<link href="https://fonts.cdnfonts.com/css/vcr-osd-mono" rel="stylesheet">
 <style>
-body {
-  margin: 0;
-  font-family: "Courier New", monospace;
-  background: #f2f2f2;
-  color: #888;
+body{
+ background:black;
+ color:white;
+ font-family:'VCR OSD Mono', monospace;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ height:100vh;
+ margin:0;
+ overflow:hidden;
 }
 
-header, footer {
-  padding: 16px 20px;
-  font-size: 12px;
-  display: flex;
-  justify-content: space-between;
+.container{
+ text-align:center;
+ animation:fadeIn 2s ease;
 }
 
-a {
-  text-decoration: none;
-  color: #888;
-  transition: color 0.15s ease;
+img{
+ width:280px;
+ margin:40px 0;
+ animation:float 6s ease-in-out infinite;
+ filter:grayscale(100%);
+ user-select:none;
+ -webkit-user-drag:none;
 }
 
-main {
-  min-height: calc(100vh - 96px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+#countdown{
+ font-size:32px;
+ letter-spacing:4px;
 }
 
-nav {
-  width: 100%;
-  max-width: 400px;
+.title{
+ color:white;
+ text-decoration:none;
 }
 
-nav a {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 0;
-  font-size: 16px;
+.title:hover{
+ color:grey;
 }
 
-nav a span {
-  transition: transform 0.15s ease;
+@keyframes fadeIn{
+ from{opacity:0; transform:translateY(20px)}
+ to{opacity:1; transform:translateY(0)}
 }
 
-nav a:hover {
-  color: #000;
-}
-
-nav a:hover span {
-  transform: translateX(6px);
+@keyframes float{
+ 0%{transform:translateY(0px)}
+ 50%{transform:translateY(-15px)}
+ 100%{transform:translateY(0px)}
 }
 </style>
 </head>
-
 <body>
 
-<header>
-  <div>newtone</div>
-  <a href="/">desktop</a>
-</header>
+<div class="container">
+<div id="countdown"></div>
 
-<main>
-  <nav>
-    <a href="https://newtone.world/music.html">
-      music <span>→</span>
-    </a>
-    <a href="https://newtone.world/fashion.html">
-      fashion <span>→</span>
-    </a>
-    <a href="https://newtone.world/coming-soon.html">
-      about <span>→</span>
-    </a>
-    <a href="https://www.instagram.com/newtone.world/" target="_blank">
-      instagram <span>→</span>
-    </a>
-  </nav>
-</main>
+<img src="https://i.imgur.com/jewkbDy.png" draggable="false" oncontextmenu="return false;"/>
 
-<footer>
-  <div>© NEWTONE.WORLD</div>
-</footer>
+<div>
+<a class="title" href="https://open.spotify.com/artist/6NvjKnOvxSoVbuv4uDhBgw?si=siBeu_ihTRW4_3yndyx-5Q" target="_blank">
+GOD COMPLEX
+</a>
+</div>
+
+</div>
+
+<script>
+const target = new Date("May 1, 2026 00:00:00").getTime();
+
+setInterval(()=>{
+ const now = new Date().getTime();
+ const diff = target - now;
+
+ const days = Math.floor(diff/(1000*60*60*24));
+ const hours = Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+ const minutes = Math.floor((diff%(1000*60*60))/(1000*60));
+ const seconds = Math.floor((diff%(1000*60))/1000);
+
+ document.getElementById("countdown").innerHTML =
+ `${days}D ${hours}H ${minutes}M ${seconds}S`;
+},1000);
+</script>
 
 </body>
 </html>
-
-
-
