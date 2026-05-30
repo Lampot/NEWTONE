@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ART - June 10, 2026</title>
+<title>ART — DYLN</title>
 <link rel="icon" type="image/jpeg" href="https://i.imgur.com/5DDpna2.jpeg">
 <meta property="og:image" content="https://i.imgur.com/k5yP9vy.jpeg">
 <meta property="og:image:width" content="1200">
@@ -194,6 +194,78 @@
   .platform-link { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 200; font-size: 8px; letter-spacing: 0.3em; text-transform: uppercase; color: rgba(245,243,238,0.75); text-decoration: none; transition: color 0.3s ease; }
   .platform-link:hover { color: rgba(245,243,238,0.95); }
   .platform-dot { width: 2px; height: 2px; border-radius: 50%; background: rgba(245,243,238,0.6); }
+
+  .presave-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .presave-modal.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .presave-modal-inner {
+    background: rgba(20,20,20,0.95);
+    border: 0.5px solid rgba(245,243,238,0.3);
+    padding: 28px 24px;
+    border-radius: 2px;
+    text-align: center;
+    max-width: 280px;
+    animation: rise 0.4s cubic-bezier(0.22,1,0.36,1);
+  }
+  .presave-modal-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 18px;
+    letter-spacing: 0.12em;
+    margin-bottom: 20px;
+    color: var(--white);
+  }
+  .presave-modal-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .presave-modal-btn {
+    background: transparent;
+    border: 0.5px solid rgba(245,243,238,0.4);
+    color: var(--dim);
+    padding: 10px 0;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 200;
+    font-size: 8px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .presave-modal-btn:hover {
+    border-color: var(--white);
+    color: var(--white);
+  }
+  .presave-modal-close {
+    margin-top: 18px;
+    background: none;
+    border: none;
+    color: rgba(245,243,238,0.35);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 200;
+    font-size: 7px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+  .presave-modal-close:hover {
+    color: var(--dim);
+  }
 </style>
 </head>
 <body>
@@ -242,6 +314,18 @@
   music division. All rights reserved.
 </div>
 </div>
+
+<div class="presave-modal" id="presaveModal">
+  <div class="presave-modal-inner">
+    <p class="presave-modal-title">SELECT PLATFORM</p>
+    <div class="presave-modal-options">
+      <button class="presave-modal-btn" onclick="openPresave('spotify')">Spotify</button>
+      <button class="presave-modal-btn" onclick="openPresave('apple')">Apple Music</button>
+    </div>
+    <button class="presave-modal-close" onclick="closePresaveModal()">Close</button>
+  </div>
+</div>
+
 <script>
 const spotifyLinks = {
   "Dylan Mabry": "https://open.spotify.com/artist/6NvjKnOvxSoVbuv4uDhBgw?si=DMQTH9onRGWAef3zkyE0Rw",
@@ -360,12 +444,21 @@ function toggleTracklist(btn) {
 }
 
 function handlePresave() {
-  window.open(
-    "https://open.spotify.com/playlist/2bJAZ1FTZWtxYDUS249UVV?si=c5defacdb6a344cf",
-    "_blank"
-  );
+  document.getElementById('presaveModal').classList.add('open');
 }
 
+function openPresave(platform) {
+  closePresaveModal();
+  if (platform === 'spotify') {
+    window.open("https://open.spotify.com/playlist/2bJAZ1FTZWtxYDUS249UVV?si=c5defacdb6a344cf", "_blank");
+  } else if (platform === 'apple') {
+    window.open("https://music.apple.com/us/artist/dyln/1809386460", "_blank");
+  }
+}
+
+function closePresaveModal() {
+  document.getElementById('presaveModal').classList.remove('open');
+}
 
 buildTracklist();
 </script>
